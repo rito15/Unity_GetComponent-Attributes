@@ -6,14 +6,15 @@
 
 ## 1. GetComponent Attributes
  ### [1] 설명
-  - GetComponent() GetComponentInChildren(), GetComponentInParent(), GetComponents(), GetComponentsInChildren(), GetComponentsInParent() 메소드를 애트리뷰트화하였습니다.
-  - 따로 GetComponent~() 메소드를 호출하여 멤버에 할당할 필요 없이, 멤버 선언부에 원하는 애트리뷰트를 사용함으로써 해당 기능이 동작합니다.
-  - 각 멤버에 대해 GetComponent 기능이 동작하는 타이밍은 Awake, Start 중 하나를 선택하여 애트리뷰트 파라미터로 명시할 수 있습니다.
-    <br>(명시하지 않을 경우, 기본적으로 Awake)
+  - ```GetComponent()```, ```GetComponentInChildren()```, ```GetComponentInParent()```, ```GetComponents()```, ```GetComponentsInChildren()```, ```GetComponentsInParent()``` 메소드를 애트리뷰트화하였습니다.
+  - 따로 ```GetComponent~()``` 메소드를 호출하여 멤버에 할당할 필요 없이, 멤버 선언부에 원하는 애트리뷰트를 사용함으로써 해당 기능이 동작합니다.
+  - 각 멤버에 대해 GetComponent 기능이 동작하는 타이밍은
+    <br>```EventFlow.Awake```, ```EventFlow.Start``` 중 하나를 선택하여 애트리뷰트 파라미터로 명시할 수 있습니다.
+    <br>(명시하지 않을 경우, 기본적으로 ```EventFlow.Awake```)
   - 해당 애트리뷰트를 인식하고 각각의 기능을 실행시키는 주체는 싱글톤 클래스로 구현하였습니다.
-  - 기본적인 GetComponent~() 메소드에 AddComponent() 메소드를 결합하여,
+  - 기본적인 ```GetComponent~()``` 메소드와 ```AddComponent()``` 메소드의 기능을 결합하여,
   <br>원하는 컴포넌트가 존재하지 않을 경우 자동적으로 컴포넌트를 추가하고 멤버에 할당하게 해주는
-  <br>GetOrAddComponent, GetOrAddInChildren, GetOrAddInParent 애트리뷰트를 제공합니다.
+  <br>```[GetOrAddComponent]```, ```[GetOrAddInChildren]```, ```[GetOrAddInParent]``` 애트리뷰트를 제공합니다.
   
   <br>
   
@@ -31,41 +32,41 @@
  ### [3] 애트리뷰트 종류
   (공통 매개변수 : EventFlow(Enum) - Awake(기본) 또는 Start 선택)
  
-  - **[GetComponent]**
+  - ```[GetComponent]```
    <br>: 게임오브젝트 내에서 해당 타입의 컴포넌트를 찾아 멤버 변수에 초기화
    <br>
    
-  - **[GetComponentInChildren]**
+  - ```[GetComponentInChildren]```
    <br>: 자기 또는 자식 게임오브젝트들 내에서 해당 타입의 컴포넌트를 찾아 멤버 변수에 초기화
    <br>
    
-  - **[GetComponentInParent]**
+  - ```[GetComponentInParent]```
    <br>: 자기 또는 부모 게임오브젝트들 내에서 해당 타입의 컴포넌트를 찾아 멤버 변수에 초기화
   
   <br>
   
-  - **[GetComponents]**
+  - ```[GetComponents]```
    <br>: 게임오브젝트 내에서 해당 타입의 컴포넌트들을 모두 찾아 멤버 변수에 초기화
    <br>* *Array, List에 대해서 동작*
    <br>
    
-  - **[GetComponentsInChildren]**
+  - ```[GetComponentsInChildren]```
    <br>: 자기 또는 자식 게임오브젝트들 내에서 해당 타입의 컴포넌트들을 모두 찾아 멤버 변수에 초기화
    <br>* *Array, List에 대해서 동작*
    <br>
    
-  - **[GetComponentsInParent]**
+  - ```[GetComponentsInParent]```
    <br>: 자기 또는 부모 게임오브젝트들 내에서 해당 타입의 컴포넌트들을 모두 찾아 멤버 변수에 초기화
    <br>* *Array, List에 대해서 동작*
   
   <br>
   
-  - **[GetOrAddComponent]**
+  - ```[GetOrAddComponent]```
    <br>: 게임오브젝트 내에서 해당 타입의 컴포넌트를 찾아 멤버 변수에 초기화
    <br>* 해당 컴포넌트가 존재하지 않을 경우, 오브젝트 내에 생성 및 추가하여 멤버 변수에 초기화
    <br>
    
-  - **[GetOrAddComponentInChildren]**
+  - ```[GetOrAddComponentInChildren]```
    <br>: 자기 또는 자식 게임오브젝트들 내에서 해당 타입의 컴포넌트를 찾아 멤버 변수에 초기화
    <br><br>* 해당 컴포넌트가 존재하지 않을 경우
    <br><br> (1) 매개변수로 지정한 이름의 자식 게임오브젝트 탐색
@@ -74,7 +75,7 @@
    <br>     해당 이름으로 자식 게임오브젝트를 생성한 뒤 컴포넌트를 생성 및 추가하여 멤버 변수에 초기화
    <br>
    
-  - **[GetOrAddComponentInParent]**
+  - ```[GetOrAddComponentInParent]```
    <br>: 자기 또는 부모 게임오브젝트들 내에서 해당 타입의 컴포넌트를 찾아 멤버 변수에 초기화
    <br><br>* 해당 컴포넌트가 존재하지 않을 경우
    <br><br> (1) 매개변수로 지정한 이름의 부모 게임오브젝트 탐색
