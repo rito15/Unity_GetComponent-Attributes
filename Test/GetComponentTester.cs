@@ -4,6 +4,7 @@ using UnityEngine;
 using Rito;
 
 // 2020. 03. 18. 작성
+// 2020. 03. 20. GetComponent -> Component 타입, Array 타입, List 타입 필드에 대해 테스트 완료
 
 public class GetComponentTester : MonoBehaviour
 {

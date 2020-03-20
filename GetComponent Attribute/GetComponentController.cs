@@ -9,9 +9,11 @@ namespace Rito
 {
     // 2020. 03. 18. 작성
     // 2020. 03. 20. 필드 - Array 대상 구현 완료
+    // 2020. 03. 20. 필드 - List 대상 구현 완료
 
-    // TODO : List 대상 구현 예정
-    // TODO : 프로퍼티 대상 구현 예정
+    // TODO : 프로퍼티 대상 구현 예정 (공통 MemberInfo로 묶기)
+
+    // TODO : GetOrAddComponent 구현 예정 (GetOrAddComponentAttributeBase로 베이스 애트리뷰트 클래스가 다름)
 
     // TODO : 에디터를 실행하면 알아서 이 싱글톤 오브젝트가 만들어지게 하기 ★
 
@@ -114,11 +116,25 @@ namespace Rito
             foreach (var component in allComponents)
             {
                 // [1] 필드 대상으로 동작
-                GetComponentActionsInFields(component, flow);
+                GetComponentActionsInFields(component, flow);   // 지울 예정
 
-                // [2] 프로퍼티 대상으로 동작
 
+                // [1] GetComponent
+
+                // [2] GetOrAddComponent
             }
+        }
+
+        /// <summary> 필드, 프로퍼티 대상으로 GetComponent 동작 </summary>
+        private void GetComponentAction()
+        {
+            // TODO : 여기에 하단 메소드 다시 작성(MemberInfo 이용)
+        }
+
+        /// <summary> 필드, 프로퍼티 대상으로 GetOrAddComponent 동작 </summary>
+        private void GetOrAddComponentAction()
+        {
+            // TODO
         }
 
         /// <summary> 필드 대상으로 GetComponent류 동작 </summary>
@@ -245,14 +261,7 @@ namespace Rito
                     }
                 }
 
-
             }
-        }
-
-        /// <summary> 프로퍼티 대상으로 GetComponent류 동작 </summary>
-        private void GetComponentActionsInProperties(in Component p_p_component)
-        {
-
         }
     }
 }

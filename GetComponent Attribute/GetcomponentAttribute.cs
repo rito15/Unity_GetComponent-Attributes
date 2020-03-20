@@ -9,13 +9,24 @@ namespace Rito
 
     #region Base
 
+    interface IGetComponent { }
+
     [System.AttributeUsage(System.AttributeTargets.Field | System.AttributeTargets.Property)]
-    public class GetComponentAttributeBase : System.Attribute
+    public abstract class GetComponentAttributeBase : System.Attribute, IGetComponent
     {
         public EventFlow Flow { get; }
 
         public GetComponentAttributeBase() => Flow = EventFlow.Awake;
         public GetComponentAttributeBase(EventFlow t) => Flow = t;
+    }
+
+    [System.AttributeUsage(System.AttributeTargets.Field | System.AttributeTargets.Property)]
+    public abstract class GetOrAddComponentAttributeBase : System.Attribute, IGetComponent
+    {
+        public EventFlow Flow { get; }
+
+        public GetOrAddComponentAttributeBase() => Flow = EventFlow.Awake;
+        public GetOrAddComponentAttributeBase(EventFlow t) => Flow = t;
     }
 
     #endregion // ==========================================================
@@ -87,7 +98,7 @@ namespace Rito
     /// <para/> * 대상 : 필드, 프로퍼티
     /// <para/> * EventFlow : 초기화할 타이밍(Awake(기본), Start)
     /// </summary>
-    public class GetOrAddComponent : GetComponentAttributeBase
+    public class GetOrAddComponent : GetOrAddComponentAttributeBase
     {
         public GetOrAddComponent() : base() { }
         public GetOrAddComponent(EventFlow t) : base(t) { }
@@ -100,7 +111,7 @@ namespace Rito
     /// <para/> * 대상 : 필드, 프로퍼티
     /// <para/> * EventFlow : 초기화할 타이밍(Awake(기본), Start)
     /// </summary>
-    public class GetOrAddComponentInChildren : GetComponentAttributeBase
+    public class GetOrAddComponentInChildren : GetOrAddComponentAttributeBase
     {
         /// <summary> 대상 자식 게임오브젝트의 이름 </summary>
         public string ChildObjectName { get; }
@@ -118,7 +129,7 @@ namespace Rito
     /// <para/> * 대상 : 필드, 프로퍼티
     /// <para/> * EventFlow : 초기화할 타이밍(Awake(기본), Start)
     /// </summary>
-    public class GetOrAddComponentInParent : GetComponentAttributeBase
+    public class GetOrAddComponentInParent : GetOrAddComponentAttributeBase
     {
         /// <summary> 대상 부모 게임오브젝트의 이름 </summary>
         public string ParentObjectName { get; }
