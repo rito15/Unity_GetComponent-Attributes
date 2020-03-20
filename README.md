@@ -26,25 +26,57 @@
   <br>
   
  ### [3] 애트리뷰트 종류
-  - [GetComponent]
-  - [GetComponentInChildren]
-  - [GetComponentInParent]
+  (공통 매개변수 : EventFlow(Enum) - Awake(기본) 또는 Start 선택)
+ 
+  - **[GetComponent]**
+   <br>: 게임오브젝트 내에서 해당 타입의 컴포넌트를 찾아 멤버 변수에 초기화
+   <br>
+   
+  - **[GetComponentInChildren]**
+   <br>: 자기 또는 자식 게임오브젝트들 내에서 해당 타입의 컴포넌트를 찾아 멤버 변수에 초기화
+   <br>
+   
+  - **[GetComponentInParent]**
+   <br>: 자기 또는 부모 게임오브젝트들 내에서 해당 타입의 컴포넌트를 찾아 멤버 변수에 초기화
   
   <br>
   
-  - [GetComponents]
-  - [GetComponentsInChildren]
-  - [GetComponentsInParent]
+  - **[GetComponents]**
+   <br>: 게임오브젝트 내에서 해당 타입의 컴포넌트들을 모두 찾아 멤버 변수에 초기화
+   <br>* Array, List에 대해서 동작
+   <br>
+   
+  - **[GetComponentsInChildren]**
+   <br>: 자기 또는 자식 게임오브젝트들 내에서 해당 타입의 컴포넌트들을 모두 찾아 멤버 변수에 초기화
+   <br>* Array, List에 대해서 동작
+   <br>
+   
+  - **[GetComponentsInParent]**
+   <br>: 자기 또는 부모 게임오브젝트들 내에서 해당 타입의 컴포넌트들을 모두 찾아 멤버 변수에 초기화
+   <br>* Array, List에 대해서 동작
   
   <br>
   
-  - [GetOrAddComponent]
-  - [GetOrAddComponentInChildren]
-  - [GetOrAddComponentInParent]
+  - **[GetOrAddComponent]**
+   <br>: 게임오브젝트 내에서 해당 타입의 컴포넌트를 찾아 멤버 변수에 초기화
+   <br>* 해당 컴포넌트가 존재하지 않을 경우, 오브젝트 내에 생성 및 추가하여 멤버 변수에 초기화
+   <br>
+   
+  - **[GetOrAddComponentInChildren]**
+   <br>: 자기 또는 자식 게임오브젝트들 내에서 해당 타입의 컴포넌트를 찾아 멤버 변수에 초기화
+   <br>* 해당 컴포넌트가 존재하지 않을 경우
+   <br> (1) 매개변수로 지정한 이름의 자식 게임오브젝트 탐색
+   <br> (2) 해당 이름의 자식 게임오브젝트가 존재할 경우, 해당 게임오브젝트에 컴포넌트를 생성 및 추가하여 멤버 변수에 초기화
+   <br> (3) 해당 이름의 자식 게임오브젝트가 존재하지 않을 경우, 해당 이름으로 자식 게임오브젝트를 생성한 뒤
+   <br>     컴포넌트를 생성 및 추가하여 멤버 변수에 초기화
+   <br>
+   
+  - **[GetOrAddComponentInParent]**
+   <br>: 자기 또는 부모 게임오브젝트들 내에서 해당 타입의 컴포넌트를 찾아 멤버 변수에 초기화
   
   <br>
   
- ### [3] 사용 예시
+ ### [4] 사용 예시
   - .
   
 <br>
