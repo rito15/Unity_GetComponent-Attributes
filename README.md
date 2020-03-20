@@ -1,5 +1,7 @@
 # Unity_GetComponentAttributes_and_Extensions
-
+ - GetComponent~() 메소드들을 애트리뷰트로 제공
+ - GetComponent~()와 AddComponent~()를 결합하여, 게임오브젝트에 원하는 컴포넌트가 존재하지 않을 경우 자동적으로 추가해주는 기능 제공
+ 
 <br>
 
 ## 1. GetComponent Attributes
