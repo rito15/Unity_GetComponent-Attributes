@@ -1,6 +1,7 @@
 # Unity_GetComponentAttributes_and_Extensions
- - GetComponent~() 메소드들을 애트리뷰트로 제공
- - GetComponent~()와 AddComponent~()를 결합하여, 게임오브젝트에 원하는 컴포넌트가 존재하지 않을 경우 자동적으로 추가해주는 기능 제공
+ - ```GetComponent~()``` 메소드들을 애트리뷰트로 제공
+ - ```GetComponent~()```와 ```AddComponent()``` 메소드를 결합하여,
+   <br>게임오브젝트에 원하는 컴포넌트가 존재하지 않을 경우 자동적으로 추가해주는 기능 제공
  
 <br>
 
@@ -21,16 +22,16 @@
  ### [2] 주의사항
   - public 멤버들에 대해서만 동작합니다.
   - 필드와 프로퍼티에 대해서만 동작합니다.
-  - Component 클래스를 상속하는 타입들에 대해서만 동작합니다.
-  - GetComponent, GetComponentInChildren, GetComponentInParent, GetOrAddComponent, GetOrAddComponentInChildren, GetOrAddComponentInParent 애트리뷰트는 Array나 List, Dictionary 등 컨테이너 또는 제네릭 타입의 멤버에 대해 동작하지 않습니다.
-  - GetComponents, GetComponentsInChildren, GetComponentsInParent 애트리뷰트는
-  <br>요소의 타입이 Component를 상속하는 경우의 Array 또는 List 타입 멤버에 대해 동작합니다.
-  - GetComponentController 클래스가 씬 내에 활성화된 컴포넌트의 형태로 존재하는 경우에만 모든 기능이 올바르게 동작 합니다.
+  - ```Component``` 클래스를 상속하는 타입들에 대해서만 동작합니다.
+  - ```[GetComponent]```, ```[GetComponentInChildren]```, ```[GetComponentInParent]```, ```[GetOrAddComponent]```, ```[GetOrAddComponentInChildren]```, ```[GetOrAddComponentInParent]``` 애트리뷰트는 ```Array```나 ```List```, ```Dictionary``` 등 컨테이너 또는 제네릭 타입의 멤버에 대해 동작하지 않습니다.
+  - ```[GetComponents]```, ```[GetComponentsInChildren]```, ```[GetComponentsInParent]``` 애트리뷰트는
+  <br>요소의 타입이 ```Component```를 상속하는 경우의 ```Array``` 또는 ```List``` 타입 멤버에 대해 동작합니다.
+  - ```GetComponentController``` 클래스가 씬 내에 활성화된 컴포넌트의 형태로 존재하는 경우에만 모든 기능이 올바르게 동작 합니다.
   
   <br>
   
  ### [3] 애트리뷰트 종류
-  (공통 매개변수 : EventFlow(Enum) - Awake(기본) 또는 Start 선택)
+  *(공통 매개변수 : ```EventFlow```(Enum) - ```EventFlow.Awake```(기본) 또는 ```EventFlow.Start``` 선택)*
  
   - ```[GetComponent]```
    <br>: 게임오브젝트 내에서 해당 타입의 컴포넌트를 찾아 멤버 변수에 초기화
