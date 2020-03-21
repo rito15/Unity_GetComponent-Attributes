@@ -69,7 +69,7 @@ namespace Rito
         /// <para/> [1] 해당 컴포넌트를 찾지 못하면 지정된 이름의 자식 게임오브젝트에 생성 및 추가한다.
         /// <para/> [2] 지정된 이름의 자식 게임오브젝트가 없으면, 해당 이름으로 자식 게임오브젝트를 생성한 뒤 컴포넌트를 추가한다.
         /// </summary>
-        public static Component GetOrAddComponentInChildren(this GameObject @this, Type p_type, in string p_childObjectName)
+        public static Component GetOrAddComponentInChildren(this GameObject @this, Type p_type, string p_childObjectName)
         {
             Component target = @this.GetComponentInChildren(p_type);
 
@@ -134,7 +134,7 @@ namespace Rito
         /// <para/> [2] 지정된 이름의 부모 게임오브젝트가 없으면, 바로 위의 부모 게임오브젝트에 컴포넌트를 추가한다.
         /// <para/> * 부모 게임오브젝트가 없을 경우(본인이 루트인 경우), [1]과 [2]는 동작하지 않으며 null을 리턴한다.
         /// </summary>
-        public static Component GetOrAddComponentInParent(this GameObject @this, Type p_type, in string p_parentObjectName)
+        public static Component GetOrAddComponentInParent(this GameObject @this, Type p_type, string p_parentObjectName)
         {
             Component target = @this.GetComponentInParent(p_type);
 
