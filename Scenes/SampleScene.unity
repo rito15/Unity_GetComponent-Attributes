@@ -618,6 +618,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0a819550c6bb7f46800d05dea0c879c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_tr_Awake: {fileID: 0}
+  m_col_Awake: {fileID: 0}
+  m_tr_Start: {fileID: 0}
+  m_col_Start: {fileID: 0}
+  m_tr_child_Awake: {fileID: 0}
+  m_col_child_Start: {fileID: 0}
+  m_tr_parent_Awake: {fileID: 0}
+  m_col_parent_Start: {fileID: 0}
+  m_com_array_Awake: []
+  m_tr_array_Awake: []
+  m_col_array_Start: []
+  m_com_list_Awake: []
+  m_tr_list_Awake: []
+  m_col_list_Start: []
+  m11: {fileID: 0}
+  m12: {fileID: 0}
+  m13: {fileID: 0}
+  m21: {fileID: 0}
+  m22: {fileID: 0}
+  m31: {fileID: 0}
+  m32: {fileID: 0}
+  m33: {fileID: 0}
+  m41: {fileID: 0}
+  m42: {fileID: 0}
 --- !u!136 &853381727
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -859,7 +883,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_parent1_SphereCollider: {fileID: 0}
   m_parent2_Rigidbody: {fileID: 0}
-  m_parent3_BoxCollider: {fileID: 0}
+  m_parent3_BoxCollider_none: {fileID: 0}
   m_capsuleCollider: {fileID: 0}
   m_light: {fileID: 0}
   m_child1_WheelCollider: {fileID: 0}

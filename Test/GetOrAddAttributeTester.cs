@@ -15,7 +15,7 @@ public class GetOrAddAttributeTester : MonoBehaviour
 
     // 1-3. 해당 컴포넌트를 갖고 있지 않으며, 이름을 못찾는 경우 (None으로 유지)
     [GetOrAddComponentInParent("")]
-    public BoxCollider m_parent3_BoxCollider;
+    public BoxCollider m_parent3_BoxCollider_none;
 
     // 2-1. 해당 컴포넌트를 갖고 있는 자기 오브젝트
     [GetOrAddComponent()]

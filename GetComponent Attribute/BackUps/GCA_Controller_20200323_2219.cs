@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Reflection;
@@ -159,6 +160,7 @@ namespace Rito
             {
                 var customAttribute = memberInfo.GetCustomAttribute<GetComponentAttributeBase>();
                 var memberType = memberInfo.Ex_GetMemberType();
+                string methodName = "";
 
                 // 5-1. GetComponent, GetOrAddComponent - Element
                 if (memberType.Ex_IsChildOrEqualsTo(typeof(Component)))
@@ -169,8 +171,6 @@ namespace Rito
                 // Array or List
                 else
                 {
-                    string methodName = "";
-
                     switch (customAttribute)
                     {
                         case GetComponents getComs:
@@ -327,3 +327,4 @@ namespace Rito
         #endregion // ==========================================================
     }
 }
+ */
