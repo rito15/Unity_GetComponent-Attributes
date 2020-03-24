@@ -99,6 +99,7 @@ namespace Rito
         private void Awake()
         {
             CheckInstance();
+            DontDestroyOnLoad(gameObject);
 
             RunAttributeAction(EventFlow.Awake);
         }
