@@ -8,7 +8,7 @@
 ## 1. GetComponent Attributes
  ### [1] 설명
   - ```GetComponent()```, ```GetComponentInChildren()```, ```GetComponentInParent()```, ```GetComponents()```, ```GetComponentsInChildren()```, ```GetComponentsInParent()``` 메소드를 애트리뷰트화하였습니다.
-  - 따로 ```GetComponent~()``` 메소드를 호출하여 멤버에 할당할 필요 없이, 멤버 선언부에 원하는 애트리뷰트를 사용함으로써 해당 기능이 동작합니다.
+  - 따로 ```GetComponent~()``` 메소드를 호출하여 멤버 변수에  할당할 필요 없이, 필드 또는 프로퍼티에 원하는 애트리뷰트를 사용함으로써 자동으로 해당 컴포넌트를 할당하도록 합니다.
   - 각 멤버에 대해 GetComponent 기능이 동작하는 타이밍을
     <br>```EventFlow.Awake```, ```EventFlow.Start``` 중 하나를 선택하여 애트리뷰트 파라미터로 명시할 수 있습니다.
   - 해당 애트리뷰트를 인식하고 각각의 기능을 실행시키는 주체는 싱글톤 클래스로 구현하였습니다.
