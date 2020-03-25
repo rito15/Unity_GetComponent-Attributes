@@ -5,7 +5,7 @@
  
 <br>
 
-## 1. GetComponent Attributes
+## GetComponent Attributes
  ### [1] 설명
   - ```GetComponent()```, ```GetComponentInChildren()```, ```GetComponentInParent()```, ```GetComponents()```, ```GetComponentsInChildren()```, ```GetComponentsInParent()``` 메소드를 애트리뷰트화하였습니다.
   - 따로 ```GetComponent~()``` 메소드를 호출하여 멤버 변수에  할당할 필요 없이, 필드 또는 프로퍼티에 원하는 애트리뷰트를 사용함으로써 자동으로 해당 컴포넌트를 할당하도록 합니다.
@@ -86,23 +86,6 @@
   
   <br>
   
- ### [4] 사용 예시
+ ### [4] 사용 방법 및 예시
   - .
   
-<br>
-
-## 2. GetOrAddComponent Extensions
- ### [1] 설명
-  - .
-  
-  <br>
- 
- ### [2] 메소드 종류
-  - .
-  
-  <br>
-  
- ### [3] 사용 예시
-  - .
-  
-  <br>
