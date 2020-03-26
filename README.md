@@ -96,10 +96,10 @@
     ![image](https://user-images.githubusercontent.com/42164422/77655161-66a3dc80-6fb5-11ea-97f1-d7d2474c0baf.png)
   
    - 실행 전<br>
-    ![image](https://user-images.githubusercontent.com/42164422/77655200-73283500-6fb5-11ea-9510-817fd354ed23.png)
+    ![image](https://user-images.githubusercontent.com/42164422/77662476-3feaa380-6fbf-11ea-8db4-743b8a78d995.png)
   
    - 실행 후<br>
-    ![image](https://user-images.githubusercontent.com/42164422/77655242-7f13f700-6fb5-11ea-8c5a-6bb080df17d4.png)
+    ![image](https://user-images.githubusercontent.com/42164422/77662543-58f35480-6fbf-11ea-8819-9dd66cbe2af3.png)
 
   #### (2) 애트리뷰트 사용
    - 소스 코드<br>
