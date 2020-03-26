@@ -1,14 +1,15 @@
 # Unity_GetComponentAttributes
- - ```GetComponent~()``` 메소드들을 애트리뷰트로 제공합니다
- - ```GetComponent~()```와 ```AddComponent()``` 메소드를 결합하여,
-   <br>게임오브젝트에  컴포넌트가 존재하지 않을 경우 자동적으로 추가해주는 애트리뷰트, 확장 메소드를 제공합니다.
+ - ```GetComponent()``` 메소드들을 애트리뷰트로 제공합니다.
+ - ```GetComponent()```와 ```AddComponent()``` 메소드를 결합하여,
+   <br>게임오브젝트에  컴포넌트가 존재하지 않을 경우 자동적으로 추가해주는 ```[GetOrAddComponent]``` 애트리뷰트를 제공합니다.
  
 <br>
 
 ## GetComponent Attributes
  ### [1] 설명
-  - ```GetComponent()```, ```GetComponentInChildren()```, ```GetComponentInParent()```, ```GetComponents()```, ```GetComponentsInChildren()```, ```GetComponentsInParent()``` 메소드를 애트리뷰트화하였습니다.
-  - 따로 ```GetComponent~()``` 메소드를 호출하여 멤버 변수에  할당할 필요 없이, 필드 또는 프로퍼티에 원하는 애트리뷰트를 사용함으로써 자동으로 해당 컴포넌트를 할당하도록 합니다.
+  - 스크립팅의 편의성을 위해
+  <br>```GetComponent()```, ```GetComponentInChildren()```, ```GetComponentInParent()```, ```GetComponents()```, ```GetComponentsInChildren()```, ```GetComponentsInParent()``` 메소드를 애트리뷰트화하였습니다.
+  - 따로 ```GetComponent()``` 종류의 메소드를 호출하여 멤버 변수에  할당할 필요 없이, 필드 또는 프로퍼티에 원하는 애트리뷰트를 사용함으로써 자동으로 해당 컴포넌트를 할당하도록 합니다.
   - 각 멤버에 대해 GetComponent 기능이 동작하는 타이밍을
     <br>```EventFlow.Awake```, ```EventFlow.Start``` 중 하나를 선택하여 애트리뷰트 파라미터로 명시할 수 있습니다.
   - 해당 애트리뷰트를 인식하고 각각의 기능을 실행시키는 주체는 싱글톤 클래스로 구현하였습니다.
@@ -86,6 +87,26 @@
   
   <br>
   
- ### [4] 사용 방법 및 예시
-  - .
+ ### [4] 사용 예시
+  #### ```GetComponentController``` 싱글톤 컴포넌트 할당
+   ![image](https://user-images.githubusercontent.com/42164422/77653822-9225c780-6fb3-11ea-8b5d-b98fcf3d7ac7.png)
+ 
+  #### (1) 기존의 코드 사용(```GetComponent()```, ```AddComponent()```)
+   - 소스 코드<br>
+    ![image](https://user-images.githubusercontent.com/42164422/77655161-66a3dc80-6fb5-11ea-97f1-d7d2474c0baf.png)
   
+   - 실행 전<br>
+    ![image](https://user-images.githubusercontent.com/42164422/77655200-73283500-6fb5-11ea-9510-817fd354ed23.png)
+  
+   - 실행 후<br>
+    ![image](https://user-images.githubusercontent.com/42164422/77655242-7f13f700-6fb5-11ea-8c5a-6bb080df17d4.png)
+
+  #### (2) 애트리뷰트 사용
+   - 소스 코드<br>
+    ![image](https://user-images.githubusercontent.com/42164422/77661752-65c37880-6fbe-11ea-999c-42a721208843.png)
+  
+   - 실행 전<br>
+    ![image](https://user-images.githubusercontent.com/42164422/77661775-6d831d00-6fbe-11ea-9da7-5ce73119947e.png)
+  
+   - 실행 후<br>
+    ![image](https://user-images.githubusercontent.com/42164422/77661848-825fb080-6fbe-11ea-9d13-570e56207605.png)
