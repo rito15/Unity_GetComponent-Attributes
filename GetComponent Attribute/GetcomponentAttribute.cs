@@ -10,12 +10,12 @@ namespace Rito
     #region Base
 
     [System.AttributeUsage(System.AttributeTargets.Field | System.AttributeTargets.Property)]
-    public abstract class GetComponentAttributeBase : System.Attribute
+    public abstract class GetComponentBaseAttribute : System.Attribute
     {
         public EventFlow Flow { get; }
 
-        public GetComponentAttributeBase() => Flow = EventFlow.Awake;
-        public GetComponentAttributeBase(EventFlow t) => Flow = t;
+        public GetComponentBaseAttribute() => Flow = EventFlow.Awake;
+        public GetComponentBaseAttribute(EventFlow t) => Flow = t;
     }
 
     #endregion // ==========================================================
@@ -25,58 +25,58 @@ namespace Rito
     /// <summary> 게임오브젝트에서 해당 타입의 컴포넌트를 찾아 지정된 필드 또는 프로퍼티에 초기화한다. 
     /// <para/> * EventFlow : 초기화할 타이밍(Awake(기본), Start)
     /// </summary>
-    public class GetComponent : GetComponentAttributeBase
+    public class GetComponentAttribute : GetComponentBaseAttribute
     {
-        public GetComponent() : base() { }
-        public GetComponent(EventFlow t) : base(t) { }
+        public GetComponentAttribute() : base() { }
+        public GetComponentAttribute(EventFlow t) : base(t) { }
     }
 
     /// <summary> 게임오브젝트에서 해당 타입의 컴포넌트들을 찾아 지정된 필드 또는 프로퍼티에 초기화한다.
     /// <para/> 대상 : Array, List, Dictionary
     /// <para/> * EventFlow : 초기화할 타이밍(Awake(기본), Start)
     /// </summary>
-    public class GetComponents : GetComponentAttributeBase
+    public class GetComponentsAttribute : GetComponentBaseAttribute
     {
-        public GetComponents() : base() { }
-        public GetComponents(EventFlow t) : base(t) { }
+        public GetComponentsAttribute() : base() { }
+        public GetComponentsAttribute(EventFlow t) : base(t) { }
     }
 
     /// <summary> 자신 및 자식 게임오브젝트에서 해당 타입의 컴포넌트를 찾아 지정된 필드 또는 프로퍼티에 초기화한다. 
     /// <para/> * EventFlow : 초기화할 타이밍(Awake(기본), Start)
     /// </summary>
-    public class GetComponentInChildren : GetComponentAttributeBase
+    public class GetComponentInChildrenAttribute : GetComponentBaseAttribute
     {
-        public GetComponentInChildren() : base() { }
-        public GetComponentInChildren(EventFlow t) : base(t) { }
+        public GetComponentInChildrenAttribute() : base() { }
+        public GetComponentInChildrenAttribute(EventFlow t) : base(t) { }
     }
 
     /// <summary> 자신 및 자식 게임오브젝트에서 해당 타입의 컴포넌트들을 찾아 지정된 필드 또는 프로퍼티에 초기화한다.
     /// <para/> 대상 : Array, List, Dictionary
     /// <para/> * EventFlow : 초기화할 타이밍(Awake(기본), Start)
     /// </summary>
-    public class GetComponentsInChildren : GetComponentAttributeBase
+    public class GetComponentsInChildrenAttribute : GetComponentBaseAttribute
     {
-        public GetComponentsInChildren() : base() { }
-        public GetComponentsInChildren(EventFlow t) : base(t) { }
+        public GetComponentsInChildrenAttribute() : base() { }
+        public GetComponentsInChildrenAttribute(EventFlow t) : base(t) { }
     }
 
     /// <summary> 자신 및 부모 게임오브젝트에서 해당 타입의 컴포넌트를 찾아 지정된 필드 또는 프로퍼티에 초기화한다. 
     /// <para/> * EventFlow : 초기화할 타이밍(Awake(기본), Start)
     /// </summary>
-    public class GetComponentInParent : GetComponentAttributeBase
+    public class GetComponentInParentAttribute : GetComponentBaseAttribute
     {
-        public GetComponentInParent() : base() { }
-        public GetComponentInParent(EventFlow t) : base(t) { }
+        public GetComponentInParentAttribute() : base() { }
+        public GetComponentInParentAttribute(EventFlow t) : base(t) { }
     }
 
     /// <summary> 자신 및 부모 게임오브젝트에서 해당 타입의 컴포넌트들을 찾아 지정된 필드 또는 프로퍼티에 초기화한다.
     /// <para/> 대상 : Array, List, Dictionary
     /// <para/> * EventFlow : 초기화할 타이밍(Awake(기본), Start)
     /// </summary>
-    public class GetComponentsInParent : GetComponentAttributeBase
+    public class GetComponentsInParentAttribute : GetComponentBaseAttribute
     {
-        public GetComponentsInParent() : base() { }
-        public GetComponentsInParent(EventFlow t) : base(t) { }
+        public GetComponentsInParentAttribute() : base() { }
+        public GetComponentsInParentAttribute(EventFlow t) : base(t) { }
     }
 
     #endregion
@@ -87,10 +87,10 @@ namespace Rito
     /// <para/> * 대상 : 필드, 프로퍼티
     /// <para/> * EventFlow : 초기화할 타이밍(Awake(기본), Start)
     /// </summary>
-    public class GetOrAddComponent : GetComponentAttributeBase
+    public class GetOrAddComponentAttribute : GetComponentBaseAttribute
     {
-        public GetOrAddComponent() : base() { }
-        public GetOrAddComponent(EventFlow t) : base(t) { }
+        public GetOrAddComponentAttribute() : base() { }
+        public GetOrAddComponentAttribute(EventFlow t) : base(t) { }
     }
 
     /// <summary> 
@@ -100,14 +100,17 @@ namespace Rito
     /// <para/> * 대상 : 필드, 프로퍼티
     /// <para/> * EventFlow : 초기화할 타이밍(Awake(기본), Start)
     /// </summary>
-    public class GetOrAddComponentInChildren : GetComponentAttributeBase
+    public class GetOrAddComponentInChildrenAttribute : GetComponentBaseAttribute
     {
         /// <summary> 대상 자식 게임오브젝트의 이름 </summary>
         public string ChildObjectName { get; }
 
-        public GetOrAddComponentInChildren(string childName) : base() => ChildObjectName = childName;
-        public GetOrAddComponentInChildren(EventFlow t, string childName) : base(t) => ChildObjectName = childName;
-        public GetOrAddComponentInChildren(string childName, EventFlow t) : base(t) => ChildObjectName = childName;
+        public GetOrAddComponentInChildrenAttribute(string childName) : base()
+            => ChildObjectName = childName;
+        public GetOrAddComponentInChildrenAttribute(EventFlow t, string childName) : base(t)
+            => ChildObjectName = childName;
+        public GetOrAddComponentInChildrenAttribute(string childName, EventFlow t) : base(t)
+            => ChildObjectName = childName;
     }
 
     /// <summary> 
@@ -118,14 +121,17 @@ namespace Rito
     /// <para/> * 대상 : 필드, 프로퍼티
     /// <para/> * EventFlow : 초기화할 타이밍(Awake(기본), Start)
     /// </summary>
-    public class GetOrAddComponentInParent : GetComponentAttributeBase
+    public class GetOrAddComponentInParentAttribute : GetComponentBaseAttribute
     {
         /// <summary> 대상 부모 게임오브젝트의 이름 </summary>
         public string ParentObjectName { get; }
 
-        public GetOrAddComponentInParent(string parentName) : base() => ParentObjectName = parentName;
-        public GetOrAddComponentInParent(EventFlow t, string parentName) : base(t) => ParentObjectName = parentName;
-        public GetOrAddComponentInParent(string parentName, EventFlow t) : base(t) => ParentObjectName = parentName;
+        public GetOrAddComponentInParentAttribute(string parentName) : base()
+            => ParentObjectName = parentName;
+        public GetOrAddComponentInParentAttribute(EventFlow t, string parentName) : base(t)
+            => ParentObjectName = parentName;
+        public GetOrAddComponentInParentAttribute(string parentName, EventFlow t) : base(t)
+            => ParentObjectName = parentName;
     }
 
     #endregion // ==========================================================

@@ -132,7 +132,7 @@ namespace Rito
             // 4. 입력된 이벤트 타이밍이 일치하는 필드만 골라내기
             var targetFInfos =
                 from fieldInfo in fInfos
-                where fieldInfo.GetCustomAttribute<GetComponentAttributeBase>()?.Flow == flow &&
+                where fieldInfo.GetCustomAttribute<GetComponentBaseAttribute>()?.Flow == flow &&
                       (fieldInfo.FieldType.Ex_IsChildOrEqualsTo(typeof(Component)) ||
                        fieldInfo.FieldType.Ex_IsArrayAndChildOf(typeof(Component)) ||
                        (fieldInfo.FieldType.Ex_IsListType())
@@ -144,7 +144,7 @@ namespace Rito
             var targetPInfos =
                 from pInfo in pInfos
                 where pInfo.SetMethod != null && // 프로퍼티에 Setter가 없는 경우 X
-                      pInfo.GetCustomAttribute<GetComponentAttributeBase>()?.Flow == flow &&
+                      pInfo.GetCustomAttribute<GetComponentBaseAttribute>()?.Flow == flow &&
                       (pInfo.PropertyType.Ex_IsChildOrEqualsTo(typeof(Component)) ||
                        pInfo.PropertyType.Ex_IsArrayAndChildOf(typeof(Component)) ||
                        (pInfo.PropertyType.Ex_IsListType())
@@ -158,7 +158,7 @@ namespace Rito
             // 5. GetComponent 종류별로 해주기
             foreach (var memberInfo in memberInfos)
             {
-                var customAttribute = memberInfo.GetCustomAttribute<GetComponentAttributeBase>();
+                var customAttribute = memberInfo.GetCustomAttribute<GetComponentBaseAttribute>();
                 var memberType = memberInfo.Ex_GetMemberType();
 
                 // 5-1. GetComponent, GetOrAddComponent - Element
@@ -174,15 +174,15 @@ namespace Rito
 
                     switch (customAttribute)
                     {
-                        case GetComponents getComs:
+                        case GetComponentsAttribute getComs:
                             methodName = "GetComponents";
                             break;
 
-                        case GetComponentsInParent getComsParent:
+                        case GetComponentsInParentAttribute getComsParent:
                             methodName = "GetComponentsInParent";
                             break;
 
-                        case GetComponentsInChildren getComsChildren:
+                        case GetComponentsInChildrenAttribute getComsChildren:
                             methodName = "GetComponentsInChildren";
                             break;
                     }
@@ -208,7 +208,7 @@ namespace Rito
         /// <para/> GetComponent 또는 GetOrAddComponent 수행</summary>
         private void GetComponentToElementMember(in MemberInfo memberInfo, in Type memberType, in Component component)
         {
-            var customAttribute = memberInfo.GetCustomAttribute<GetComponentAttributeBase>();
+            var customAttribute = memberInfo.GetCustomAttribute<GetComponentBaseAttribute>();
             GameObject go = component.gameObject;
 
             string methodName = "";
@@ -218,35 +218,35 @@ namespace Rito
 
             switch (customAttribute)
             {
-                case GetComponent g:
+                case GetComponentAttribute g:
                     memberInfo.Ex_SetValue(component, go.GetComponent(memberType));
                     break;
 
-                case GetComponentInParent g:
+                case GetComponentInParentAttribute g:
                     memberInfo.Ex_SetValue(component, go.GetComponentInParent(memberType));
                     break;
 
-                case GetComponentInChildren g:
+                case GetComponentInChildrenAttribute g:
                     memberInfo.Ex_SetValue(component, go.GetComponentInChildren(memberType));
                     break;
 
 
-                case GetOrAddComponent goa:
+                case GetOrAddComponentAttribute goa:
                     methodName = "GetOrAddComponent";
                     methodParams = new Type[] { typeof(GameObject), typeof(Type) };
                     realParams = new object[] { component.gameObject, memberType };
                     break;
 
-                case GetOrAddComponentInChildren goa:
+                case GetOrAddComponentInChildrenAttribute goa:
                     methodName = "GetOrAddComponentInChildren";
-                    goaTargetString = (customAttribute as GetOrAddComponentInChildren).ChildObjectName;
+                    goaTargetString = (customAttribute as GetOrAddComponentInChildrenAttribute).ChildObjectName;
                     methodParams = new Type[] { typeof(GameObject), typeof(Type), typeof(string) };
                     realParams = new object[] { component.gameObject, memberType, goaTargetString };
                     break;
 
-                case GetOrAddComponentInParent goa:
+                case GetOrAddComponentInParentAttribute goa:
                     methodName = "GetOrAddComponentInParent";
-                    goaTargetString = (customAttribute as GetOrAddComponentInParent).ParentObjectName;
+                    goaTargetString = (customAttribute as GetOrAddComponentInParentAttribute).ParentObjectName;
                     methodParams = new Type[] { typeof(GameObject), typeof(Type), typeof(string) };
                     realParams = new object[] { component.gameObject, memberType, goaTargetString };
                     break;
