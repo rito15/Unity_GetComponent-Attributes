@@ -88,9 +88,6 @@
   <br>
   
  ### [4] 사용 예시
-  #### ```GetComponentController``` 싱글톤 컴포넌트 할당
-   ![image](https://user-images.githubusercontent.com/42164422/77653822-9225c780-6fb3-11ea-8b5d-b98fcf3d7ac7.png)
- 
   #### (1) 기존의 코드 사용(```GetComponent()```, ```AddComponent()```)
    - 소스 코드<br>
     ![image](https://user-images.githubusercontent.com/42164422/77655161-66a3dc80-6fb5-11ea-97f1-d7d2474c0baf.png)
@@ -102,6 +99,9 @@
     ![image](https://user-images.githubusercontent.com/42164422/77662543-58f35480-6fbf-11ea-8819-9dd66cbe2af3.png)
 
   #### (2) 애트리뷰트 사용
+   -  ```GetComponentController``` 오브젝트 생성 및 싱글톤 컴포넌트 할당<br>
+   ![image](https://user-images.githubusercontent.com/42164422/77653822-9225c780-6fb3-11ea-8b5d-b98fcf3d7ac7.png)
+ 
    - 소스 코드<br>
     ![image](https://user-images.githubusercontent.com/42164422/77661752-65c37880-6fbe-11ea-999c-42a721208843.png)
   
