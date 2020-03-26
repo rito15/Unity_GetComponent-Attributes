@@ -13,7 +13,7 @@
   - 각 멤버에 대해 GetComponent 기능이 동작하는 타이밍을
     <br>```EventFlow.Awake```, ```EventFlow.Start``` 중 하나를 선택하여 애트리뷰트 파라미터로 명시할 수 있습니다.
   - 해당 애트리뷰트를 인식하고 각각의 기능을 실행시키는 주체는 싱글톤 클래스로 구현하였습니다.
-  - 기본적인 ```GetComponent~()``` 메소드와 ```AddComponent()``` 메소드의 기능을 결합하여,
+  - 기본적인 ```GetComponent()```  메소드와 ```AddComponent()``` 메소드의 기능을 결합하여,
   <br>원하는 컴포넌트가 존재하지 않을 경우 자동적으로 컴포넌트를 추가하고 멤버에 할당하게 해주는
   <br>```[GetOrAddComponent]```, ```[GetOrAddInChildren]```, ```[GetOrAddInParent]``` 애트리뷰트를 제공합니다.
   
