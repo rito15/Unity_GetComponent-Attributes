@@ -6,6 +6,7 @@ namespace Rito
 {
     // 2020. 03. 18. 작성
     // 2020. 03. 20. GetOrAdd 추가
+    // 2020. 03. 30. GetComponentInAChild 추가
 
     #region Base
 
@@ -77,6 +78,25 @@ namespace Rito
     {
         public GetComponentsInParentAttribute() : base() { }
         public GetComponentsInParentAttribute(EventFlow t) : base(t) { }
+    }
+
+    /// <summary> 지정한 이름의 자식 게임오브젝트에서 해당 타입의 컴포넌트를 찾아 지정된 필드 또는 프로퍼티에 초기화한다. 
+    /// <para/> * EventFlow : 초기화할 타이밍(Awake(기본), Start)
+    /// <para/> * 해당 이름의 자식 게임오브젝트가 존재하지 않을 경우, 아무런 동작을 하지 않는다.
+    /// </summary>
+    public class GetComponentInAChildAttribute : GetComponentBaseAttribute
+    {
+        /// <summary> 대상 자식 게임오브젝트의 이름 </summary>
+        public string ChildObjectName { get; }
+
+        public GetComponentInAChildAttribute(string childName) : base()
+            => ChildObjectName = childName;
+
+        public GetComponentInAChildAttribute(EventFlow t, string childName) : base(t)
+            => ChildObjectName = childName;
+
+        public GetComponentInAChildAttribute(string childName, EventFlow t) : base(t)
+            => ChildObjectName = childName;
     }
 
     #endregion

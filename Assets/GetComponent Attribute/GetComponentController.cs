@@ -13,6 +13,7 @@ namespace Rito
     // 2020. 03. 21. 필드 - GetOrAddComponent 구현 및 테스트 완료
     // 2020. 03. 21. 프로퍼티 대상으로 구현 완료
     // 2020. 03. 23. 리팩토링 : 필드, 프로퍼티를 MemberInfo로 합치고 구현 및 테스트 완료
+    // 2020. 03. 30. GetComponentInAChild 구현 및 테스트 완료
 
     // TODO : 모든 테스트케이스 검증
 
@@ -231,24 +232,35 @@ namespace Rito
                     break;
 
 
+                case GetComponentInAChildAttribute gcic:
+                    var childName = (customAttribute as GetComponentInAChildAttribute).ChildObjectName;
+                    var method = typeof(GetComponentExtension)
+                        .GetMethod("GetComponentInAChild", new Type[] { typeof(GameObject), typeof(string) });
+                    var gMethod = method.MakeGenericMethod(memberType);
+                    var returnedComponent = gMethod.Invoke(go, new object[] { go, childName });
+
+                    memberInfo.Ex_SetValue(component, returnedComponent);
+                    break;
+
+
                 case GetOrAddComponentAttribute goa:
                     methodName = "GetOrAddComponent";
                     methodParams = new Type[] { typeof(GameObject), typeof(Type) };
-                    realParams = new object[] { component.gameObject, memberType };
+                    realParams = new object[] { go, memberType };
                     break;
 
                 case GetOrAddComponentInChildrenAttribute goa:
                     methodName = "GetOrAddComponentInChildren";
                     goaTargetString = (customAttribute as GetOrAddComponentInChildrenAttribute).ChildObjectName;
                     methodParams = new Type[] { typeof(GameObject), typeof(Type), typeof(string) };
-                    realParams = new object[] { component.gameObject, memberType, goaTargetString };
+                    realParams = new object[] { go, memberType, goaTargetString };
                     break;
 
                 case GetOrAddComponentInParentAttribute goa:
                     methodName = "GetOrAddComponentInParent";
                     goaTargetString = (customAttribute as GetOrAddComponentInParentAttribute).ParentObjectName;
                     methodParams = new Type[] { typeof(GameObject), typeof(Type), typeof(string) };
-                    realParams = new object[] { component.gameObject, memberType, goaTargetString };
+                    realParams = new object[] { go, memberType, goaTargetString };
                     break;
             }
 
