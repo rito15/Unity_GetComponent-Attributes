@@ -62,5 +62,5 @@ crashlytics-build.properties
 *.meta
 gitUp.cmd
 
-/NaughtyAttributes/
-/BackUps/
+/[Aa]ssets/NaughtyAttributes/
+/[Aa]ssets/BackUps/
