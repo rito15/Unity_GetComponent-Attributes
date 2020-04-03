@@ -59,8 +59,11 @@ sysinfo.txt
 crashlytics-build.properties
 
 # Additions by Rito
-*.meta
-gitUp.cmd
+*.cmd
+*.cmd.meta
 
 /[Aa]ssets/NaughtyAttributes/
 /[Aa]ssets/BackUps/
+
+LICENSE.meta
+README.md.meta
