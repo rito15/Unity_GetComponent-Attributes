@@ -5,6 +5,11 @@
  
 <br>
 
+## Preview
+![image](https://user-images.githubusercontent.com/42164422/78349823-278e1080-75df-11ea-943c-8ed8ff570252.png)
+
+<br>
+
 ## GetComponent Attributes
  ### [1] 설명
   - 스크립팅의 편의성을 위해
