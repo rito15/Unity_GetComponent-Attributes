@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace Rito
+namespace Rito.Attributes
 {
     // 2020. 03. 20. 작성
     // 2020. 03. 20. 기능 테스트 완료
