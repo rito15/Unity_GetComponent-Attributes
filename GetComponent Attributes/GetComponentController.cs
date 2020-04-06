@@ -96,6 +96,13 @@ namespace Rito.Attributes
 
         #endregion // ==================================================================
 
+        #region Singleton - Auto Loading Method
+
+        [UnityEditor.InitializeOnEnterPlayMode]
+        public static void OnEnterPlayMode() => SingletonAutoLoader.Run<GetComponentController>();
+
+        #endregion // ==================================================================
+
         private void Awake()
         {
             CheckInstance();
