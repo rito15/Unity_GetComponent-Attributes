@@ -6,12 +6,18 @@
 ## Preview
 ![image](https://user-images.githubusercontent.com/42164422/78679874-bb384780-7925-11ea-9975-186a3ef34c24.png)
 
-<br>
+ <br>
 
 ## 설명
   - 리플렉션과 커스텀 애트리뷰트를 활용하여 제작하였습니다.
   - ```Component```를 상속받는 타입의 필드/프로퍼티에 사용할 수 있습니다.
   - 본 애트리뷰트들을 통한 컴포넌트 할당 기능은 OnEnable() 이후, Start() 이전에 동작합니다.
+ 
+  <br>
+
+## 사용법
+  - 컴포넌트 스크립트 상단에 ```using Rito.Attributes;```를 추가합니다.
+  - 대상 필드 또는 프로퍼티의 앞에 ```[GetComponent]``` 종류의 애트리뷰트를 추가합니다.
  
   <br>
   
