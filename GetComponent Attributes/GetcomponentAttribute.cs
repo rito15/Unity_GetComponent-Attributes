@@ -6,6 +6,7 @@ namespace Rito.Attributes
     // 2020. 03. 30. GetComponentInAChild 추가
     // 2020. 04. 07. 싱글톤 -> Start() 직전에 자동 호출되는 정적 메소드화,
     //               애트리뷰트 파라미터에서 EventFlow 제거, AllowOverwrite 추가
+    // 2020. 04. 07. GetOrAddComponentInAChild 추가
 
     #region Base
 
@@ -81,8 +82,8 @@ namespace Rito.Attributes
     }
 
     /// <summary> 지정한 이름의 자식 게임오브젝트에서 해당 타입의 컴포넌트를 찾아 지정된 필드 또는 프로퍼티에 초기화한다. 
-    /// <para/> * AllowOverwrite : 이미 참조가 할당되어 있어도 GetComponent를 수행하여 덮어쓸지 여부
     /// <para/> * 해당 이름의 자식 게임오브젝트가 존재하지 않을 경우, 아무런 동작을 하지 않는다.
+    /// <para/> * AllowOverwrite : 이미 참조가 할당되어 있어도 GetComponent를 수행하여 덮어쓸지 여부
     /// </summary>
     public class GetComponentInAChildAttribute : GetComponentBaseAttribute
     {
@@ -111,6 +112,26 @@ namespace Rito.Attributes
     {
         public GetOrAddComponentAttribute() : base() { }
         public GetOrAddComponentAttribute(bool a) : base(a) { }
+    }
+
+    /// <summary> 
+    /// <para/> 지정한 이름의 자식 오브젝트에서 해당 타입의 컴포넌트를 찾고,
+    /// <para/> [1] 해당 컴포넌트를 찾지 못하면 지정된 이름의 자식 게임오브젝트에 생성 및 추가한다.
+    /// <para/> [2] 지정된 이름의 자식 게임오브젝트가 없으면, 해당 이름으로 자식 게임오브젝트를 생성한 뒤 컴포넌트를 추가한다.
+    /// <para/> * 대상 : 필드, 프로퍼티
+    /// <para/> * AllowOverwrite : 이미 참조가 할당되어 있어도 GetComponent를 수행하여 덮어쓸지 여부
+    /// </summary>
+    public class GetOrAddComponentInAChildAttribute : GetComponentBaseAttribute
+    {
+        /// <summary> 대상 자식 게임오브젝트의 이름 </summary>
+        public string ChildObjectName { get; }
+
+        public GetOrAddComponentInAChildAttribute(string childName) : base()
+            => ChildObjectName = childName;
+        public GetOrAddComponentInAChildAttribute(bool a, string childName) : base(a)
+            => ChildObjectName = childName;
+        public GetOrAddComponentInAChildAttribute(string childName, bool a) : base(a)
+            => ChildObjectName = childName;
     }
 
     /// <summary> 

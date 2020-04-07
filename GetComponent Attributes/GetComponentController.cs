@@ -161,6 +161,16 @@ namespace Rito.Attributes
                     memberInfo.Ex_SetValue(component, returnedComponent);
                     break;
 
+                case GetOrAddComponentInAChildAttribute goaic:
+                    var childName_ = (customAttribute as GetOrAddComponentInAChildAttribute).ChildObjectName;
+                    var method_ = typeof(GetComponentExtension)
+                        .GetMethod("GetOrAddComponentInAChild", new Type[] { typeof(GameObject), typeof(string) });
+                    var gMethod_ = method_.MakeGenericMethod(memberType);
+                    var returnedComponent_ = gMethod_.Invoke(go, new object[] { go, childName_ });
+
+                    memberInfo.Ex_SetValue(component, returnedComponent_);
+                    break;
+
 
                 case GetOrAddComponentAttribute goa:
                     methodName = "GetOrAddComponent";

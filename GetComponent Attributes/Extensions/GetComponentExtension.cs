@@ -184,5 +184,30 @@ namespace Rito.Attributes
             else
                 return null;
         }
+
+        /// <summary> 
+        /// <para/> 지정한 이름의 자식 게임오브젝트들에서 해당 타입의 컴포넌트를 찾아 리턴한다.
+        /// <para/> * 해당 자식 게임오브젝트에 해당 컴포넌트가 존재하지 않을 경우, 추가하여 리턴한다.
+        /// <para/> * 해당 이름의 자식 게임오브젝트가 존재하지 않을 경우, 해당 이름으로 자식 게임오브젝트를 생성하고 컴포넌트를 추가하여 리턴한다.
+        /// </summary>
+        public static T GetOrAddComponentInAChild<T>(this GameObject @this, string childObjectName) where T : Component
+        {
+            // 지정된 이름의 자식 게임오브젝트 찾거나 새롭게 생성
+            Transform targetChild = @this.transform.Find(childObjectName);
+            if (targetChild == null)
+            {
+                GameObject childGO = new GameObject(childObjectName);
+                targetChild = childGO.transform;
+                targetChild.SetParent(@this.transform);
+            }
+            
+            // 자식에서 컴포넌트 탐색하거나 생성
+            var targetComponent = targetChild.gameObject.GetComponent<T>();
+
+            if (targetComponent == null)
+                targetComponent = targetChild.gameObject.AddComponent<T>();
+
+            return targetComponent;
+        }
     }
 }
