@@ -19,10 +19,8 @@
  ### [2] 주의사항
   - public 멤버들에 대해서만 동작합니다.
   - ```Component``` 클래스를 상속하는 타입들에 대해서만 동작합니다.
-  - ```[GetComponent]```, ```[GetComponentInChildren]```, ```[GetComponentInParent]```, ```[GetOrAddComponent]```, ```[GetOrAddComponentInChildren]```, ```[GetOrAddComponentInParent]``` 애트리뷰트는 ```Array```나 ```List```, ```Dictionary``` 등 컨테이너 또는 제네릭 타입의 멤버에 대해 동작하지 않습니다.
-  - ```[GetComponents]```, ```[GetComponentsInChildren]```, ```[GetComponentsInParent]``` 애트리뷰트는
-  <br>요소의 타입이 ```Component```를 상속하는 경우의 ```Array``` 또는 ```List``` 타입 멤버에 대해 동작합니다.
-  - ```GetComponentController``` 클래스가 씬 내에 활성화된 컴포넌트의 형태로 존재하는 경우에만 모든 기능이 올바르게 동작 합니다.
+  - ```[GetComponent]``` 종류의 애트리뷰트는 ```Array```나 ```List```, ```Dictionary``` 등 컨테이너 또는 제네릭 타입의 멤버에 대해 동작하지 않습니다.
+  - ```[GetComponents]``` 종류의 애트리뷰트는 요소의 타입이 ```Component```를 상속하는 경우의 ```Array``` 또는 ```List``` 타입 멤버에 대해 동작합니다.
   
   <br>
   
