@@ -13,123 +13,26 @@ namespace Rito.Attributes
     // 2020. 03. 21. 프로퍼티 대상으로 구현 완료
     // 2020. 03. 23. 리팩토링 : 필드, 프로퍼티를 MemberInfo로 합치고 구현 및 테스트 완료
     // 2020. 03. 30. GetComponentInAChild 구현 및 테스트 완료
+    // 2020. 04. 06. 싱글톤 오브젝트 자동 생성 구현 완료
+    // 2020. 04. 07. 싱글톤 -> 로드 시 자동 호출되는 정적 메소드로 변경(OnEnable() ~ Start() 사이 호출)
 
-    // TODO : 모든 테스트케이스 검증
-
-    // TODO : 에디터를 실행하면 알아서 이 싱글톤 오브젝트가 만들어지게 하기 ★
-
-    public partial class GetComponentController : MonoBehaviour
+    public static class GetComponentController
     {
-        #region Singleton - Public
-
-        /// <summary> 싱글톤 인스턴스 Getter </summary>
-        public static GetComponentController Instance
-        {
-            get
-            {
-                if (instance == null)    // 체크 1 : 인스턴스가 없는 경우
-                    CheckExsistence();
-
-                return instance;
-            }
-        }
-
-        /// <summary> 싱글톤 인스턴스의 또다른 이름 </summary>
-        public static GetComponentController Sin => Instance;
-        /// <summary> 싱글톤 인스턴스의 또다른 이름 </summary>
-        public static GetComponentController Ins => Instance;
-        /// <summary> 싱글톤 인스턴스의 또다른 이름 </summary>
-        public static GetComponentController I => Instance;
-
-        /// <summary>
-        /// 싱글톤을 그저 생성하기 위한 메소드
-        /// </summary>
-        public void Call() { }
-
-        /// <summary>
-        /// 싱글톤을 그저 생성하기 위한 정적 메소드
-        /// </summary>
-        public static void Call_()
-        {
-            if (instance == null)
-                CheckExsistence();
-        }
-
-        #endregion // ==================================================================
-
-        #region Singleton - Private
-
-        // 싱글톤 인스턴스
-        private static GetComponentController instance;
-
-        // 싱글톤 인스턴스 존재 여부 확인 (체크 2)
-        private static void CheckExsistence()
-        {
-            // 싱글톤 검색
-            instance = FindObjectOfType<GetComponentController>();
-
-            // 인스턴스 가진 오브젝트가 존재하지 않을 경우, 빈 오브젝트를 임의로 생성하여 인스턴스 할당
-            if (instance == null)
-            {
-                // 빈 게임 오브젝트 생성
-                GameObject container = new GameObject("GetComponentController Singleton Container");
-
-                // 게임 오브젝트에 클래스 컴포넌트 추가 후 인스턴스 할당
-                instance = container.AddComponent<GetComponentController>();
-            }
-        }
-
-        /// <summary> 
-        /// [Awake()에서 호출]
-        /// <para/> 싱글톤 스크립트를 미리 오브젝트에 담아 사용하는 경우를 위한 로직
-        /// </summary>
-        private void CheckInstance()
-        {
-            // 싱글톤 인스턴스가 존재하지 않았을 경우, 본인으로 초기화
-            if (instance == null)
-                instance = this;
-
-            // 싱글톤 인스턴스가 존재하는데, 본인이 아닐 경우, 스스로를 파괴
-            if (instance != null && instance != this)
-                Destroy(this);
-        }
-
-        #endregion // ==================================================================
-
-        #region Singleton - Auto Loading Method
-
-        [UnityEditor.InitializeOnEnterPlayMode]
-        public static void OnEnterPlayMode() => SingletonAutoLoader.Run<GetComponentController>();
-
-        #endregion // ==================================================================
-
-        private void Awake()
-        {
-            CheckInstance();
-            DontDestroyOnLoad(gameObject);
-
-            RunAttributeAction(EventFlow.Awake);
-        }
-
-        private void Start()
-        {
-            RunAttributeAction(EventFlow.Start);
-        }
-
-        /// <summary> 원하는 유니티 기본 이벤트 타이밍에 GetComponent 동작 </summary>
-        private void RunAttributeAction(EventFlow flow)
+        /// <summary> OnEnable() ~ Start() 사이에 실행 </summary>
+        [RuntimeInitializeOnLoadMethod]
+        private static void RunAttributeAction()
         {
             // 모든 활성 컴포넌트 찾기
-            var allComponents = FindObjectsOfType<Component>();
+            var allComponents = UnityEngine.Object.FindObjectsOfType<Component>();
 
             foreach (var component in allComponents)
             {
-                RunGetComponentActions(component, flow);
+                RunGetComponentActions(component);
             }
         }
 
         /// <summary> 필드, 프로퍼티 대상으로 GetComponent, GetOrAddCOmponent 수행 </summary>
-        private void RunGetComponentActions(Component component, EventFlow flow)
+        private static void RunGetComponentActions(Component component)
         {
             // 1. 모든 필드 찾기 -> NonPublic은 타입 찾을 때 인식이 안되니 미리 패스
             var fInfos = component.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
@@ -138,20 +41,29 @@ namespace Rito.Attributes
             // 3. GetComponent류 애트리뷰트가 있는 필드만 골라내기
             // 4. 입력된 이벤트 타이밍이 일치하는 필드만 골라내기
             var targetFInfos =
-                from fieldInfo in fInfos
-                where fieldInfo.GetCustomAttribute<GetComponentBaseAttribute>()?.Flow == flow &&
-                      (fieldInfo.FieldType.Ex_IsChildOrEqualsTo(typeof(Component)) ||
-                       fieldInfo.FieldType.Ex_IsArrayAndChildOf(typeof(Component)) ||
-                       (fieldInfo.FieldType.Ex_IsListType())
+                from fInfo in fInfos
+                where fInfo.GetCustomAttribute<GetComponentBaseAttribute>() != null &&
+                      (fInfo.GetCustomAttribute<GetComponentBaseAttribute>().AllowOverwrite == true ||
+                       fInfo.GetValue(component) == null || (fInfo.GetValue(component) as Component) == null
                       )
-                select fieldInfo;
+                      &&
+                      (fInfo.FieldType.Ex_IsChildOrEqualsTo(typeof(Component)) ||
+                       fInfo.FieldType.Ex_IsArrayAndChildOf(typeof(Component)) ||
+                       (fInfo.FieldType.Ex_IsListType())
+                      )
+                select fInfo;
 
             // 프로퍼티에 똑같이 수행
             var pInfos = component.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
             var targetPInfos =
                 from pInfo in pInfos
-                where pInfo.SetMethod != null && // 프로퍼티에 Setter가 없는 경우 X
-                      pInfo.GetCustomAttribute<GetComponentBaseAttribute>()?.Flow == flow &&
+                where pInfo.SetMethod != null && pInfo.GetMethod != null && 
+                      pInfo.GetCustomAttribute<GetComponentBaseAttribute>() != null &&
+                      (pInfo.GetCustomAttribute<GetComponentBaseAttribute>().AllowOverwrite == true ||
+                       pInfo.GetValue(component) == null || (pInfo.GetValue(component) as Component) == null
+                      )
+                      &&
                       (pInfo.PropertyType.Ex_IsChildOrEqualsTo(typeof(Component)) ||
                        pInfo.PropertyType.Ex_IsArrayAndChildOf(typeof(Component)) ||
                        (pInfo.PropertyType.Ex_IsListType())
@@ -160,7 +72,7 @@ namespace Rito.Attributes
 
             // 멤버 리스트로 병합
             List<MemberInfo> memberInfos = targetFInfos.ToList<MemberInfo>();
-            memberInfos.AddRange(pInfos.ToList<MemberInfo>());
+            memberInfos.AddRange(targetPInfos.ToList<MemberInfo>());
 
             // 5. GetComponent 종류별로 해주기
             foreach (var memberInfo in memberInfos)
@@ -213,7 +125,7 @@ namespace Rito.Attributes
 
         /// <summary> 배열이나 제네릭이 아닌 보통 타입의 필드, 프로퍼티에 대해
         /// <para/> GetComponent 또는 GetOrAddComponent 수행</summary>
-        private void GetComponentToElementMember(in MemberInfo memberInfo, in Type memberType, in Component component)
+        private static void GetComponentToElementMember(in MemberInfo memberInfo, in Type memberType, in Component component)
         {
             var customAttribute = memberInfo.GetCustomAttribute<GetComponentBaseAttribute>();
             GameObject go = component.gameObject;
@@ -227,6 +139,7 @@ namespace Rito.Attributes
             {
                 case GetComponentAttribute g:
                     memberInfo.Ex_SetValue(component, go.GetComponent(memberType));
+
                     break;
 
                 case GetComponentInParentAttribute g:
@@ -280,7 +193,7 @@ namespace Rito.Attributes
         }
 
         /// <summary> 배열 타입 필드, 프로퍼티에 대해 GetComponent 수행</summary>
-        private void GetComponentToArrayMember(in MemberInfo memberInfo, in Type memberType, in Component component,
+        private static void GetComponentToArrayMember(in MemberInfo memberInfo, in Type memberType, in Component component,
             in string methodName)
         {
             Type elementType = memberType.GetElementType();
@@ -305,7 +218,7 @@ namespace Rito.Attributes
         }
 
         /// <summary> 리스트 타입 필드, 프로퍼티에 대해 GetComponent 수행</summary>
-        private void GetComponentToListMember(in MemberInfo memberInfo, in Type memberType, in Component component,
+        private static void GetComponentToListMember(in MemberInfo memberInfo, in Type memberType, in Component component,
             in string methodName)
         {
             Type genericType = memberType.GetGenericArguments()[0];
