@@ -94,4 +94,4 @@
   <br>
   
  ### [4] 실행 화면
-  
+  ![GetComAttr](https://user-images.githubusercontent.com/42164422/78687106-c643a580-792e-11ea-9cbf-e5204d5e17ed.gif)
