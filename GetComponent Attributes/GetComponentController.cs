@@ -15,11 +15,20 @@ namespace Rito.Attributes
     // 2020. 03. 30. GetComponentInAChild 구현 및 테스트 완료
     // 2020. 04. 06. 싱글톤 오브젝트 자동 생성 구현 완료
     // 2020. 04. 07. 싱글톤 -> 로드 시 자동 호출되는 정적 메소드로 변경(OnEnable() ~ Start() 사이 호출)
+    // 2020. 04. 08. 씬 재시작 시에도 기능이 동작하도록 추가
 
     public static class GetComponentController
     {
         /// <summary> OnEnable() ~ Start() 사이에 실행 </summary>
         [RuntimeInitializeOnLoadMethod]
+        private static void OnRuntimeLoad()
+        {
+            RunAttributeAction();
+
+            // 씬 재시작 시 호출하도록 추가
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded += (a, b) => RunAttributeAction();
+        }
+        
         private static void RunAttributeAction()
         {
             // 모든 활성 컴포넌트 찾기
