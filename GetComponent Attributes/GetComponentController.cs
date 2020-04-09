@@ -64,7 +64,7 @@ namespace Rito.Attributes
                 select fInfo;
 
             // 프로퍼티에 똑같이 수행
-            var pInfos = component.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            var pInfos = component.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
             var targetPInfos =
                 from pInfo in pInfos
