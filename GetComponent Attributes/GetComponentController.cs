@@ -16,6 +16,7 @@ namespace Rito.Attributes
     // 2020. 04. 06. 싱글톤 오브젝트 자동 생성 구현 완료
     // 2020. 04. 07. 싱글톤 -> 로드 시 자동 호출되는 정적 메소드로 변경(OnEnable() ~ Start() 사이 호출)
     // 2020. 04. 08. 씬 재시작 시에도 기능이 동작하도록 추가
+    // 2020. 04. 10. 필드 탐색 범위 NonPublic 추가 : SerializeField를 함께 사용한 private, protected 필드에 적용 가능
 
     public static class GetComponentController
     {
@@ -43,8 +44,8 @@ namespace Rito.Attributes
         /// <summary> 필드, 프로퍼티 대상으로 GetComponent, GetOrAddCOmponent 수행 </summary>
         private static void RunGetComponentActions(Component component)
         {
-            // 1. 모든 필드 찾기 -> NonPublic은 타입 찾을 때 인식이 안되니 미리 패스
-            var fInfos = component.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
+            // 1. 모든 필드 찾기
+            var fInfos = component.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
             // 2. Component의 자식 타입인 참조형 필드만 골라내기 (is Component)
             // 3. GetComponent류 애트리뷰트가 있는 필드만 골라내기
