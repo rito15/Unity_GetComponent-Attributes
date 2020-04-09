@@ -16,7 +16,7 @@ namespace Rito.Attributes
     // 2020. 04. 06. 싱글톤 오브젝트 자동 생성 구현 완료
     // 2020. 04. 07. 싱글톤 -> 로드 시 자동 호출되는 정적 메소드로 변경(OnEnable() ~ Start() 사이 호출)
     // 2020. 04. 08. 씬 재시작 시에도 기능이 동작하도록 추가
-    // 2020. 04. 10. 필드 탐색 범위 NonPublic 추가 : SerializeField를 함께 사용한 private, protected 필드에 적용 가능
+    // 2020. 04. 10. 필드 탐색 범위 NonPublic 추가 : private, protected 필드에도 모두 적용 가능
 
     public static class GetComponentController
     {
