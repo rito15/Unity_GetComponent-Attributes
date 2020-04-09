@@ -8,7 +8,7 @@
 
  <br>
 
-## Examples
+## Example
 - .
 
  <br>
