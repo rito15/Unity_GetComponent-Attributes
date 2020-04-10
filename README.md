@@ -140,6 +140,8 @@ public Collider _col;
 /* 배열, 리스트 대상 애트리뷰트를 엘리먼트 타입 멤버에 사용한 경우 */
 [FindAll] public Spawner_Test _spawner_wrong;
 ```
+![image](https://user-images.githubusercontent.com/42164422/79011643-6a338800-7b9f-11ea-8a96-8fa134babb65.png)
+
  <br>
 
 ## 설명
