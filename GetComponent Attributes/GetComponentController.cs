@@ -145,7 +145,7 @@ namespace Rito.Attributes
                     // Error
                     else
                     {
-                        ErrorLog(memberInfo, component);
+                        ErrorLog(memberInfo, component, memberType);
                     }
                 } 
             } // foreach
@@ -291,7 +291,7 @@ namespace Rito.Attributes
                     break;
 
                 default:
-                    ErrorLog(memberInfo, component);
+                    ErrorLog(memberInfo, component, memberType);
                     break;
             }
 
@@ -311,7 +311,7 @@ namespace Rito.Attributes
         {
             if (methodName.Length == 0)
             {
-                ErrorLog(memberInfo, component);
+                ErrorLog(memberInfo, component, memberType);
                 return;
             }
 
@@ -350,7 +350,7 @@ namespace Rito.Attributes
             // ERROR
             if (targetComponentsArr == null)
             {
-                ErrorLog(memberInfo, component);
+                ErrorLog(memberInfo, component, memberType);
                 return;
             }
             // 타겟 필드에 할당
@@ -379,73 +379,13 @@ namespace Rito.Attributes
                 }
             }
         }
-        /*
-        /// <summary> 리스트 타입 필드, 프로퍼티에 대해 GetComponent 수행</summary>
-        private static void GetComponentToListMember(in MemberInfo memberInfo, in Type memberType, in Component component,
-            in string methodName)
-        {
-            if (methodName.Length == 0) return;
-
-            Type genericType = memberType.GetGenericArguments()[0];
-            GameObject go = component.gameObject;
-            object caller = go;
-            object[] realParams = null;
-
-            // GetCompo~<타입> 메소드를 타입 지정하여 가져오기
-            MethodInfo getComsMethod = typeof(GameObject).GetMethod(methodName, new Type[0]);
-
-            // 확장 메소드에서 탐색
-            if (getComsMethod == null)
-            {
-                getComsMethod = typeof(GetComponentExtension).GetMethod(methodName, new Type[] { typeof(GameObject) });
-                realParams = new object[] { go };
-            }
-
-            // FIndHelper에서 탐색
-            if (getComsMethod == null)
-            {
-                getComsMethod = typeof(FindHelper).GetMethod(methodName);
-                caller = null;
-                realParams = null;
-            }
-
-            if (getComsMethod == null)
-                return;
-
-            MethodInfo genericMethod = getComsMethod.MakeGenericMethod(genericType);
-
-            // 게임오브젝트로부터 해당 타입의 컴포넌트들 가져오기
-            var targetComponentsObj = genericMethod.Invoke(caller, realParams);
-
-            // 배열로 변환
-            Array targetComponentsArr = targetComponentsObj as Array;
-
-            if (targetComponentsArr != null)
-            {
-                // 새로운 리스트를 인스턴스화하여 생성
-                object newList = Activator.CreateInstance(memberType);
-
-                // Add 메소드 가져오기
-                MethodInfo AddToListMethod = memberType.GetMethod("Add");
-
-                // 리스트에 배열 요소들 초기화
-                foreach (var item in targetComponentsArr)
-                {
-                    AddToListMethod.Invoke(newList, new object[] { item });
-                }
-
-                // 타겟 필드에 리스트 참조 할당
-                memberInfo.Ex_SetValue(component, newList);
-            }
-            
-        }*/
-
 
         [System.Diagnostics.Conditional("UNITY_EDITOR")]
-        public static void ErrorLog(in MemberInfo memberInfo, in Component component)
+        public static void ErrorLog(in MemberInfo memberInfo, in Component component, in Type memberType)
         {
-            Debug.LogWarning($"[Rito.GetComponentAttributes] - Wrong Attribute is Used - " +
-                        $"GameObject : {component.gameObject.name} / Component : {component.name} / Member : {memberInfo.Name}");
+            Debug.LogWarning($"[Rito.GetComponentAttributes] Wrong Attribute Usage : \n\n" +
+                        $"GameObject : {component.gameObject.name}, \nComponent : {component.GetType()}, \n" +
+                        $"Member Name : {memberInfo.Name}, \nMember Type : {memberType}\n\n\n");
         }
 
         #endregion // ==========================================================
