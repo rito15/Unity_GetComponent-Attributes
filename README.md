@@ -12,12 +12,12 @@
 
 /* 공통 파라미터 AllowOverwrite : 지정하지 않으면 기본 값은 false
     false : 해당 필드/프로퍼티가 null인 경우에만 컴포넌트 초기화 동작을 수행합니다.
-    true  : 해당 필드/프로퍼티가 null이 아닌 경우에도 컴포넌트 초기화를 수행하여, 덮어 쓰기*/
+    true  : 해당 필드/프로퍼티가 null이 아닌 경우에도 컴포넌트 초기화를 수행하여, 덮어 씁니다. */
 [GetComponent(false)] public Transform _whenAllowOverwriteIsFalse;
 [GetComponent(true)]  public Transform _whenAllowOverwriteIsTrue;
 
 /* Private, Protected, Public 등 모든 접근지정자에 대해 정상적으로 동작합니다.
-    하이라키에서 확인하고 싶은 경우, SerializeField를 함께 사용합니다. */
+   하이라키에서 확인하고 싶은 경우, SerializeField를 함께 사용합니다. */
 [GetComponent]                 private Transform _privateMember1;
 [SerializeField, GetComponent] private Transform _privateMember2;
 
