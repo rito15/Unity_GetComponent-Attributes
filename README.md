@@ -37,7 +37,7 @@ public Collider _col;
 [GetComponentInChildren]      public CharacterInventory_Test _inventory;
 
 /* 지정한 이름의 자식 게임 오브젝트 내에서 해당 타입의 컴포넌트를 찾아 가져옵니다.
-    해당 이름의 자식 게임 오브젝트가 존재하지 않을 경우, 아무런 동작을 하지 않습니다. */
+   해당 이름의 자식 게임 오브젝트가 존재하지 않을 경우, 아무런 동작을 하지 않습니다. */
 [GetComponentInChild("Mesh")] public Transform _meshTransform;
 
 /* 자신 및 부모 게임 오브젝트 내에서 해당 타입의 컴포넌트를 찾아 가져옵니다. */
