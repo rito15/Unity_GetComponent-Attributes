@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager_Test : MonoBehaviour
+namespace Rito.Attributes.Test
 {
+    public class GameManager_Test : MonoBehaviour
+    {
+    }
 }

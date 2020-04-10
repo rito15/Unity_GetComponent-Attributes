@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Rito.Attributes;
 
-public class PlayerManager_Test : MonoBehaviour
+namespace Rito.Attributes.Test
 {
-    
+    public class PlayerManager_Test : MonoBehaviour
+    {
+
+    }
 }
