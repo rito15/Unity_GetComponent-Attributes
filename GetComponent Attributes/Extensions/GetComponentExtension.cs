@@ -7,7 +7,7 @@ namespace Rito.Attributes
 {
     // 2020. 03. 20. 작성
     // 2020. 03. 20. 기능 테스트 완료
-    // 2020. 03. 30. GetComponentInAChild 추가
+    // 2020. 03. 30. GetComponentInChild 추가
 
     public static class GetComponentExtension
     {
@@ -165,17 +165,19 @@ namespace Rito.Attributes
 
         #endregion // ==========================================================
 
+        #region In Child
+
         /// <summary> 
         /// <para/> 특정 이름의 자식 게임오브젝트들에서 해당 타입의 컴포넌트를 찾아 리턴한다.
         /// <para/> * 해당 이름의 자식 게임오브젝트가 존재하지 않을 경우, 아무런 동작을 하지 않는다.
         /// </summary>
-        public static T GetComponentInAChild<T>(this GameObject @this, string childObjectName) where T : Component
+        public static T GetComponentInChild<T>(this GameObject @this, string childObjectName) where T : Component
         {
             // 지정된 이름의 자식 게임오브젝트 찾기
             Transform targetChild = @this.transform.Find(childObjectName);
             if (targetChild == null)
                 return null;
-            
+
             var targetComponent = targetChild.gameObject.GetComponent<T>();
 
             if (targetComponent != null)
@@ -190,7 +192,7 @@ namespace Rito.Attributes
         /// <para/> * 해당 자식 게임오브젝트에 해당 컴포넌트가 존재하지 않을 경우, 추가하여 리턴한다.
         /// <para/> * 해당 이름의 자식 게임오브젝트가 존재하지 않을 경우, 해당 이름으로 자식 게임오브젝트를 생성하고 컴포넌트를 추가하여 리턴한다.
         /// </summary>
-        public static T GetOrAddComponentInAChild<T>(this GameObject @this, string childObjectName) where T : Component
+        public static T GetOrAddComponentInChild<T>(this GameObject @this, string childObjectName) where T : Component
         {
             // 지정된 이름의 자식 게임오브젝트 찾거나 새롭게 생성
             Transform targetChild = @this.transform.Find(childObjectName);
@@ -200,7 +202,7 @@ namespace Rito.Attributes
                 targetChild = childGO.transform;
                 targetChild.SetParent(@this.transform);
             }
-            
+
             // 자식에서 컴포넌트 탐색하거나 생성
             var targetComponent = targetChild.gameObject.GetComponent<T>();
 
@@ -209,5 +211,108 @@ namespace Rito.Attributes
 
             return targetComponent;
         }
+
+        #endregion // ==========================================================
+
+        #region Children, Parent Only
+
+        /// <summary> 자신을 제외한 자식 게임오브젝트들에서 해당 타입의 컴포넌트를 찾아 리턴
+        /// </summary>
+        public static T GetComponentInChildrenOnly<T>(this GameObject @this) where T : Component
+        {
+            Transform tr = @this.transform;
+            if (tr.childCount == 0)
+                return null;
+
+            T target;
+            for (int i = 0; i < tr.childCount; i++)
+            {
+                target = tr.GetChild(i).GetComponentInChildren<T>();
+                if (target != null)
+                    return target;
+            }
+
+            return null;
+        }
+
+        /// <summary> 자신을 제외한 자식 게임오브젝트들에서 해당 타입의 컴포넌트들을 모두 찾아 리턴
+        /// </summary>
+        public static T[] GetComponentsInChildrenOnly<T>(this GameObject @this) where T : Component
+        {
+            Transform tr = @this.transform;
+            if (tr.childCount == 0)
+                return null;
+
+            List<T> childComponentList = new List<T>();
+            T[] targets;
+            for (int i = 0; i < tr.childCount; i++)
+            {
+                targets = tr.GetChild(i).GetComponentsInChildren<T>();
+                if (targets != null && targets.Length != 0)
+                    foreach (var target in targets)
+                    {
+                        childComponentList.Add(target);
+                    }
+            }
+
+            return childComponentList.ToArray();
+        }
+
+        /// <summary> 자신을 제외한 부모 게임오브젝트들에서 해당 타입의 컴포넌트를 찾아 리턴
+        /// </summary>
+        public static T GetComponentInParentOnly<T>(this GameObject @this) where T : Component
+        {
+            Transform tr = @this.transform;
+
+            // 부모가 없어 루트인 경우
+            if (tr.parent == null)
+                return null;
+
+
+            List<T> parentComponentList = new List<T>();
+            T targetComponent;
+
+            while (tr.parent != null)
+            {
+                tr = tr.parent;
+
+                targetComponent = tr.GetComponent<T>();
+                if (tr != null)
+                    return targetComponent;
+            }
+
+            return null;
+        }
+
+        /// <summary> 자신을 제외한 부모 게임오브젝트들에서 해당 타입의 컴포넌트들을 모두 찾아 리턴
+        /// </summary>
+        public static T[] GetComponentsInParentOnly<T>(this GameObject @this) where T : Component
+        {
+            Transform tr = @this.transform;
+
+            // 부모가 없어 루트인 경우
+            if (tr.parent == null)
+                return null;
+
+
+            List<T> parentComponentList = new List<T>();
+            T[] targets;
+
+            while (tr.parent != null)
+            {
+                tr = tr.parent;
+
+                targets = tr.GetComponents<T>();
+                if (targets != null && targets.Length != 0)
+                    foreach (var target in targets)
+                    {
+                        parentComponentList.Add(target);
+                    }
+            }
+
+            return parentComponentList.ToArray();
+        }
+
+        #endregion // ==========================================================
     }
 }

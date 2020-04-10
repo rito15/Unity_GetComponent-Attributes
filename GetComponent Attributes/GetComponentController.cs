@@ -12,7 +12,7 @@ namespace Rito.Attributes
     // 2020. 03. 21. 필드 - GetOrAddComponent 구현 및 테스트 완료
     // 2020. 03. 21. 프로퍼티 대상으로 구현 완료
     // 2020. 03. 23. 리팩토링 : 필드, 프로퍼티를 MemberInfo로 합치고 구현 및 테스트 완료
-    // 2020. 03. 30. GetComponentInAChild 구현 및 테스트 완료
+    // 2020. 03. 30. GetComponentInChild 구현 및 테스트 완료
     // 2020. 04. 06. 싱글톤 오브젝트 자동 생성 구현 완료
     // 2020. 04. 07. 싱글톤 -> 로드 시 자동 호출되는 정적 메소드로 변경(OnEnable() ~ Start() 사이 호출)
     // 2020. 04. 08. 씬 재시작 시에도 기능이 동작하도록 추가
@@ -114,18 +114,38 @@ namespace Rito.Attributes
                         case GetComponentsInChildrenAttribute getComsChildren:
                             methodName = "GetComponentsInChildren";
                             break;
+
+                        // Only
+                        case GetComponentsInChildrenOnlyAttribute childrenOnly:
+                            methodName = "GetComponentsInChildrenOnly";
+                            break;
+
+                        case GetComponentsInParentOnlyAttribute parentOnly:
+                            methodName = "GetComponentsInParentOnly";
+                            break;
+
+                        // Find
+                        case FindAllAttribute fa:
+                            methodName = "FindAll";
+                            break;
                     }
 
                     // 5-2. GetComponents - Array
                     if (memberType.Ex_IsArrayAndChildOf(typeof(Component)))
                     {
-                        GetComponentToArrayMember(memberInfo, memberType, component, methodName);
+                        GetComponentToArrayOrList(memberInfo, memberType, component, methodName, true);
                     }
 
                     // 5-3. GetComponents - List<T>
                     else if (memberType.Ex_IsListAndChildOf(typeof(Component)))
                     {
-                        GetComponentToListMember(memberInfo, memberType, component, methodName);
+                        GetComponentToArrayOrList(memberInfo, memberType, component, methodName, false);
+                    }
+
+                    // Error
+                    else
+                    {
+                        ErrorLog(memberInfo, component);
                     }
                 } 
             } // foreach
@@ -143,13 +163,18 @@ namespace Rito.Attributes
             string methodName = "";
             Type[] methodParams = new Type[0];      // GetOrAdd에서 사용 : 메소드 파라미터
             object[] realParams = new object[0];    // GetOrAdd에서 사용 : 실질 파라미터
-            string goaTargetString = "";            // GetOrAdd 애트리뷰트에서 가져오는 타겟 부모 또는 자식 이름 스트링
+            string targetString = "";            // GetOrAdd 애트리뷰트에서 가져오는 타겟 부모 또는 자식 이름 스트링
+
+            // Extension Method
+            string paramString = "";
+            MethodInfo method;
+            object returnedComponent;
+            string extMethodName;
 
             switch (customAttribute)
             {
                 case GetComponentAttribute g:
                     memberInfo.Ex_SetValue(component, go.GetComponent(memberType));
-
                     break;
 
                 case GetComponentInParentAttribute g:
@@ -161,27 +186,6 @@ namespace Rito.Attributes
                     break;
 
 
-                case GetComponentInAChildAttribute gcic:
-                    var childName = (customAttribute as GetComponentInAChildAttribute).ChildObjectName;
-                    var method = typeof(GetComponentExtension)
-                        .GetMethod("GetComponentInAChild", new Type[] { typeof(GameObject), typeof(string) });
-                    var gMethod = method.MakeGenericMethod(memberType);
-                    var returnedComponent = gMethod.Invoke(go, new object[] { go, childName });
-
-                    memberInfo.Ex_SetValue(component, returnedComponent);
-                    break;
-
-                case GetOrAddComponentInAChildAttribute goaic:
-                    var childName_ = (customAttribute as GetOrAddComponentInAChildAttribute).ChildObjectName;
-                    var method_ = typeof(GetComponentExtension)
-                        .GetMethod("GetOrAddComponentInAChild", new Type[] { typeof(GameObject), typeof(string) });
-                    var gMethod_ = method_.MakeGenericMethod(memberType);
-                    var returnedComponent_ = gMethod_.Invoke(go, new object[] { go, childName_ });
-
-                    memberInfo.Ex_SetValue(component, returnedComponent_);
-                    break;
-
-
                 case GetOrAddComponentAttribute goa:
                     methodName = "GetOrAddComponent";
                     methodParams = new Type[] { typeof(GameObject), typeof(Type) };
@@ -190,73 +194,173 @@ namespace Rito.Attributes
 
                 case GetOrAddComponentInChildrenAttribute goa:
                     methodName = "GetOrAddComponentInChildren";
-                    goaTargetString = (customAttribute as GetOrAddComponentInChildrenAttribute).ChildObjectName;
+                    targetString = (customAttribute as GetOrAddComponentInChildrenAttribute).ChildObjectName;
                     methodParams = new Type[] { typeof(GameObject), typeof(Type), typeof(string) };
-                    realParams = new object[] { go, memberType, goaTargetString };
+                    realParams = new object[] { go, memberType, targetString };
                     break;
 
                 case GetOrAddComponentInParentAttribute goa:
                     methodName = "GetOrAddComponentInParent";
-                    goaTargetString = (customAttribute as GetOrAddComponentInParentAttribute).ParentObjectName;
+                    targetString = (customAttribute as GetOrAddComponentInParentAttribute).ParentObjectName;
                     methodParams = new Type[] { typeof(GameObject), typeof(Type), typeof(string) };
-                    realParams = new object[] { go, memberType, goaTargetString };
+                    realParams = new object[] { go, memberType, targetString };
+                    break;
+
+
+                // 확장 메소드 - 추가 파라미터가 존재하여 as를 써야 함 - 일일이 다 작성
+                case GetComponentInChildAttribute gcic:
+                    paramString = (customAttribute as GetComponentInChildAttribute).ChildObjectName;
+                    method = typeof(GetComponentExtension)
+                        .GetMethod("GetComponentInChild", new Type[] { typeof(GameObject), typeof(string) })
+                        .MakeGenericMethod(memberType);
+                    returnedComponent = method.Invoke(go, new object[] { go, paramString });
+
+                    memberInfo.Ex_SetValue(component, returnedComponent);
+                    break;
+
+                case GetOrAddComponentInChildAttribute goaic:
+                    paramString = (customAttribute as GetOrAddComponentInChildAttribute).ChildObjectName;
+                    method = typeof(GetComponentExtension)
+                        .GetMethod("GetOrAddComponentInChild", new Type[] { typeof(GameObject), typeof(string) })
+                        .MakeGenericMethod(memberType);
+                    returnedComponent = method.Invoke(go, new object[] { go, paramString });
+
+                    memberInfo.Ex_SetValue(component, returnedComponent);
+                    break;
+
+
+                // 확장 메소드 - 추가 파라미터가 없어서 as를 안써도 되는 경우들
+                case GetComponentInChildrenOnlyAttribute gco:
+                case GetComponentInParentOnlyAttribute gpo:
+                    extMethodName = customAttribute.GetType().ToString().Replace("Attribute", "");
+                    int dotIndex = extMethodName.LastIndexOf('.');
+
+                    if(dotIndex > -1)
+                        extMethodName = extMethodName.Substring(dotIndex + 1);
+
+                    method = typeof(GetComponentExtension)
+                        .GetMethod(extMethodName, new Type[] { typeof(GameObject) })
+                        .MakeGenericMethod(memberType);
+                    returnedComponent = method.Invoke(go, new object[] { go });
+
+                    memberInfo.Ex_SetValue(component, returnedComponent);
+                    break;
+
+
+                // 정적 메소드 - Find
+                case FindAttribute fih:
+                    method = typeof(FindHelper)
+                        .GetMethod("Find")
+                        .MakeGenericMethod(memberType);
+                    returnedComponent = method.Invoke(null, null);
+
+                    memberInfo.Ex_SetValue(component, returnedComponent);
+                    break;
+
+                case FindOrAddAttribute foa:
+                    paramString = (customAttribute as FindOrAddAttribute).NewGoName;
+
+                    method = typeof(FindHelper)
+                        .GetMethod("FindOrAdd", new Type[] { typeof(string) })
+                        .MakeGenericMethod(memberType);
+                    returnedComponent = method.Invoke(null, new object[] { paramString });
+
+                    memberInfo.Ex_SetValue(component, returnedComponent);
+                    break;
+
+                case FindByNameAttribute fbn:
+                    paramString = (customAttribute as FindByNameAttribute).TargetGoName;
+
+                    method = typeof(FindHelper)
+                        .GetMethod("FindByName", new Type[] { typeof(string) })
+                        .MakeGenericMethod(memberType);
+                    returnedComponent = method.Invoke(null, new object[] { paramString });
+
+                    memberInfo.Ex_SetValue(component, returnedComponent);
+                    break;
+
+                case FindByNameOrAddAttribute fbnoa:
+                    paramString = (customAttribute as FindByNameOrAddAttribute).TargetGoName;
+
+                    method = typeof(FindHelper)
+                        .GetMethod("FindByNameOrAdd", new Type[] { typeof(string) })
+                        .MakeGenericMethod(memberType);
+                    returnedComponent = method.Invoke(null, new object[] { paramString });
+
+                    memberInfo.Ex_SetValue(component, returnedComponent);
+                    break;
+
+                default:
+                    ErrorLog(memberInfo, component);
                     break;
             }
 
-            // Get Or Add
+            // Extensions - Get Or Add, Only
             if (methodName.Length > 0)
             {
-                var getOrAddMethod = typeof(GetComponentExtension).GetMethod(methodName, methodParams);
-                var returnedComponent = getOrAddMethod.Invoke(component.gameObject, realParams);
+                var extMethod = typeof(GetComponentExtension).GetMethod(methodName, methodParams);
+                returnedComponent = extMethod.Invoke(component.gameObject, realParams);
                 memberInfo.Ex_SetValue(component, returnedComponent);
             }
         }
 
+        // isArray : true(Array), false(List)
         /// <summary> 배열 타입 필드, 프로퍼티에 대해 GetComponent 수행</summary>
-        private static void GetComponentToArrayMember(in MemberInfo memberInfo, in Type memberType, in Component component,
-            in string methodName)
+        private static void GetComponentToArrayOrList(in MemberInfo memberInfo, in Type memberType, in Component component,
+            in string methodName, in bool isArray)
         {
-            Type elementType = memberType.GetElementType();
-            GameObject go = component.gameObject;
-
-            if (methodName.Length > 0)
+            if (methodName.Length == 0)
             {
-                // GetCompo~<타입> 메소드를 타입 지정하여 가져오기
-                MethodInfo getComsMethod = typeof(GameObject).GetMethod(methodName, new Type[0])
-                            .MakeGenericMethod(elementType);
-
-                // 게임오브젝트로부터 해당 타입의 컴포넌트들 가져오기
-                var targetComponentsObj = getComsMethod.Invoke(go, null);
-
-                // 배열로 변환
-                Array targetComponentsArr = targetComponentsObj as Array;
-
-                // 타겟 필드에 할당
-                if (targetComponentsArr != null)
-                    memberInfo.Ex_SetValue(component, targetComponentsArr);
+                ErrorLog(memberInfo, component);
+                return;
             }
-        }
 
-        /// <summary> 리스트 타입 필드, 프로퍼티에 대해 GetComponent 수행</summary>
-        private static void GetComponentToListMember(in MemberInfo memberInfo, in Type memberType, in Component component,
-            in string methodName)
-        {
-            Type genericType = memberType.GetGenericArguments()[0];
+            Type elementType = isArray ? memberType.GetElementType() : memberType.GetGenericArguments()[0];
+
             GameObject go = component.gameObject;
+            object caller = go;
+            object[] realParams = null;
 
-            if (methodName.Length > 0)
+            // 1. GetCompo~<타입> 메소드를 타입 지정하여 가져오기
+            MethodInfo getComsMethod = typeof(GameObject).GetMethod(methodName, new Type[0]);
+
+            // 2. 못찾으면 확장 메소드에서 탐색
+            if (getComsMethod == null)
             {
-                // GetCompo~<타입> 메소드를 타입 지정하여 가져오기
-                MethodInfo getComsMethod = typeof(GameObject).GetMethod(methodName, new Type[0])
-                            .MakeGenericMethod(genericType);
+                getComsMethod = typeof(GetComponentExtension).GetMethod(methodName, new Type[] { typeof(GameObject) });
+                realParams = new object[] { go };
+            }
 
-                // 게임오브젝트로부터 해당 타입의 컴포넌트들 가져오기
-                var targetComponentsObj = getComsMethod.Invoke(go, null);
+            // 3. 또 못찾으면 FIndHelper에서 탐색
+            if (getComsMethod == null)
+            {
+                getComsMethod = typeof(FindHelper).GetMethod(methodName, new Type[0]);
+                caller = null;
+                realParams = null;
+            }
 
-                // 배열로 변환
-                Array targetComponentsArr = targetComponentsObj as Array;
+            MethodInfo genericMethod = getComsMethod.MakeGenericMethod(elementType);
 
-                if (targetComponentsArr != null)
+            // 메소드 실행
+            var targetComponentsObj = genericMethod.Invoke(caller, realParams);
+
+            // 배열로 변환
+            Array targetComponentsArr = targetComponentsObj as Array;
+
+            // ERROR
+            if (targetComponentsArr == null)
+            {
+                ErrorLog(memberInfo, component);
+                return;
+            }
+            // 타겟 필드에 할당
+            else
+            {
+                // 1. 배열인 경우
+                if (isArray)
+                    memberInfo.Ex_SetValue(component, targetComponentsArr);
+                // 2. 리스트인 경우
+                else
                 {
                     // 새로운 리스트를 인스턴스화하여 생성
                     object newList = Activator.CreateInstance(memberType);
@@ -275,7 +379,75 @@ namespace Rito.Attributes
                 }
             }
         }
+        /*
+        /// <summary> 리스트 타입 필드, 프로퍼티에 대해 GetComponent 수행</summary>
+        private static void GetComponentToListMember(in MemberInfo memberInfo, in Type memberType, in Component component,
+            in string methodName)
+        {
+            if (methodName.Length == 0) return;
+
+            Type genericType = memberType.GetGenericArguments()[0];
+            GameObject go = component.gameObject;
+            object caller = go;
+            object[] realParams = null;
+
+            // GetCompo~<타입> 메소드를 타입 지정하여 가져오기
+            MethodInfo getComsMethod = typeof(GameObject).GetMethod(methodName, new Type[0]);
+
+            // 확장 메소드에서 탐색
+            if (getComsMethod == null)
+            {
+                getComsMethod = typeof(GetComponentExtension).GetMethod(methodName, new Type[] { typeof(GameObject) });
+                realParams = new object[] { go };
+            }
+
+            // FIndHelper에서 탐색
+            if (getComsMethod == null)
+            {
+                getComsMethod = typeof(FindHelper).GetMethod(methodName);
+                caller = null;
+                realParams = null;
+            }
+
+            if (getComsMethod == null)
+                return;
+
+            MethodInfo genericMethod = getComsMethod.MakeGenericMethod(genericType);
+
+            // 게임오브젝트로부터 해당 타입의 컴포넌트들 가져오기
+            var targetComponentsObj = genericMethod.Invoke(caller, realParams);
+
+            // 배열로 변환
+            Array targetComponentsArr = targetComponentsObj as Array;
+
+            if (targetComponentsArr != null)
+            {
+                // 새로운 리스트를 인스턴스화하여 생성
+                object newList = Activator.CreateInstance(memberType);
+
+                // Add 메소드 가져오기
+                MethodInfo AddToListMethod = memberType.GetMethod("Add");
+
+                // 리스트에 배열 요소들 초기화
+                foreach (var item in targetComponentsArr)
+                {
+                    AddToListMethod.Invoke(newList, new object[] { item });
+                }
+
+                // 타겟 필드에 리스트 참조 할당
+                memberInfo.Ex_SetValue(component, newList);
+            }
+            
+        }*/
+
+
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
+        public static void ErrorLog(in MemberInfo memberInfo, in Component component)
+        {
+            Debug.LogWarning($"[Rito.GetComponentAttributes] - Wrong Attribute is Used - " +
+                        $"GameObject : {component.gameObject.name} / Component : {component.name} / Member : {memberInfo.Name}");
+        }
 
         #endregion // ==========================================================
-    }
+    } // class End
 }

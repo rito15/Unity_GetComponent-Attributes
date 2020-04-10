@@ -85,18 +85,18 @@ namespace Rito.Attributes
     /// <para/> * 해당 이름의 자식 게임오브젝트가 존재하지 않을 경우, 아무런 동작을 하지 않는다.
     /// <para/> * AllowOverwrite : 이미 참조가 할당되어 있어도 GetComponent를 수행하여 덮어쓸지 여부
     /// </summary>
-    public class GetComponentInAChildAttribute : GetComponentBaseAttribute
+    public class GetComponentInChildAttribute : GetComponentBaseAttribute
     {
         /// <summary> 대상 자식 게임오브젝트의 이름 </summary>
         public string ChildObjectName { get; }
 
-        public GetComponentInAChildAttribute(string childName) : base()
+        public GetComponentInChildAttribute(string childName) : base()
             => ChildObjectName = childName;
 
-        public GetComponentInAChildAttribute(bool a, string childName) : base(a)
+        public GetComponentInChildAttribute(bool a, string childName) : base(a)
             => ChildObjectName = childName;
 
-        public GetComponentInAChildAttribute(string childName, bool a) : base(a)
+        public GetComponentInChildAttribute(string childName, bool a) : base(a)
             => ChildObjectName = childName;
     }
 
@@ -121,16 +121,16 @@ namespace Rito.Attributes
     /// <para/> * 대상 : 필드, 프로퍼티
     /// <para/> * AllowOverwrite : 이미 참조가 할당되어 있어도 GetComponent를 수행하여 덮어쓸지 여부
     /// </summary>
-    public class GetOrAddComponentInAChildAttribute : GetComponentBaseAttribute
+    public class GetOrAddComponentInChildAttribute : GetComponentBaseAttribute
     {
         /// <summary> 대상 자식 게임오브젝트의 이름 </summary>
         public string ChildObjectName { get; }
 
-        public GetOrAddComponentInAChildAttribute(string childName) : base()
+        public GetOrAddComponentInChildAttribute(string childName) : base()
             => ChildObjectName = childName;
-        public GetOrAddComponentInAChildAttribute(bool a, string childName) : base(a)
+        public GetOrAddComponentInChildAttribute(bool a, string childName) : base(a)
             => ChildObjectName = childName;
-        public GetOrAddComponentInAChildAttribute(string childName, bool a) : base(a)
+        public GetOrAddComponentInChildAttribute(string childName, bool a) : base(a)
             => ChildObjectName = childName;
     }
 
@@ -174,6 +174,106 @@ namespace Rito.Attributes
         public GetOrAddComponentInParentAttribute(string parentName, bool a) : base(a)
             => ParentObjectName = parentName;
     }
+
+    #endregion // ==========================================================
+
+    #region GetComponent(s) Children, Parent - Only
+
+    /// <summary> 자신을 제외한 자식 게임오브젝트들에서 해당 타입의 컴포넌트를 찾아 지정된 필드 또는 프로퍼티에 초기화한다. 
+    /// <para/> * AllowOverwrite : 이미 참조가 할당되어 있어도 GetComponent를 수행하여 덮어쓸지 여부
+    /// </summary>
+    public class GetComponentInChildrenOnlyAttribute : GetComponentBaseAttribute
+    {
+        public GetComponentInChildrenOnlyAttribute() : base() { }
+        public GetComponentInChildrenOnlyAttribute(bool a) : base(a) { }
+    }
+
+    /// <summary> 자신을 제외한 부모 게임오브젝트들에서 해당 타입의 컴포넌트를 찾아 지정된 필드 또는 프로퍼티에 초기화한다. 
+    /// <para/> * AllowOverwrite : 이미 참조가 할당되어 있어도 GetComponent를 수행하여 덮어쓸지 여부
+    /// </summary>
+    public class GetComponentInParentOnlyAttribute : GetComponentBaseAttribute
+    {
+        public GetComponentInParentOnlyAttribute() : base() { }
+        public GetComponentInParentOnlyAttribute(bool a) : base(a) { }
+    }
+
+    /// <summary> 자신을 제외한 자식 게임오브젝트들에서 해당 타입의 컴포넌트들을 찾아 지정된 필드 또는 프로퍼티에 초기화한다. 
+    /// <para/> * AllowOverwrite : 이미 참조가 할당되어 있어도 GetComponent를 수행하여 덮어쓸지 여부
+    /// </summary>
+    public class GetComponentsInChildrenOnlyAttribute : GetComponentBaseAttribute
+    {
+        public GetComponentsInChildrenOnlyAttribute() : base() { }
+        public GetComponentsInChildrenOnlyAttribute(bool a) : base(a) { }
+    }
+
+    /// <summary> 자신을 제외한 부모 게임오브젝트들에서 해당 타입의 컴포넌트들을 찾아 지정된 필드 또는 프로퍼티에 초기화한다. 
+    /// <para/> * AllowOverwrite : 이미 참조가 할당되어 있어도 GetComponent를 수행하여 덮어쓸지 여부
+    /// </summary>
+    public class GetComponentsInParentOnlyAttribute : GetComponentBaseAttribute
+    {
+        public GetComponentsInParentOnlyAttribute() : base() { }
+        public GetComponentsInParentOnlyAttribute(bool a) : base(a) { }
+    }
+
+    #endregion // ==========================================================
+
+    #region Find
+
+    /// <summary> 현재 씬 내에서 타겟 타입의 컴포넌트를 찾아와 초기화
+    /// <para/> * 씬 내에 해당 컴포넌트가 하나도 존재하지 않을 경우 아무런 동작을 수행하지 않음
+    /// <para/> * AllowOverwrite : 이미 참조가 할당되어 있어도 기능을 수행하여 덮어쓸지 여부
+    /// </summary>
+    public class FindAttribute : GetComponentBaseAttribute
+    {
+        public FindAttribute(bool a = false) : base(a) { }
+    }
+
+    /// <summary> 현재 씬 내에서 타겟 타입의 컴포넌트를 모두 찾아와 초기화
+    /// <para/> * 씬 내에 해당 컴포넌트가 하나도 존재하지 않을 경우 아무런 동작을 수행하지 않음
+    /// <para/> * AllowOverwrite : 이미 참조가 할당되어 있어도 기능을 수행하여 덮어쓸지 여부
+    /// </summary>
+    public class FindAllAttribute : GetComponentBaseAttribute
+    {
+        public FindAllAttribute(bool a = false) : base(a) { }
+    }
+
+    /// <summary> 현재 씬 내에서 타겟 타입의 컴포넌트를 찾아와 초기화
+    /// <para/> * 씬 내에 해당 컴포넌트가 하나도 존재하지 않을 경우, 지정한 이름(NewGoName)으로 게임 오브젝트를 생성한 뒤 컴포넌트 추가
+    /// <para/> * AllowOverwrite : 이미 참조가 할당되어 있어도 기능을 수행하여 덮어쓸지 여부
+    /// </summary>
+    public class FindOrAddAttribute : GetComponentBaseAttribute
+    {
+        public string NewGoName { get; }
+
+        public FindOrAddAttribute(string newGoName, bool a = false) : base(a) => NewGoName = newGoName;
+        public FindOrAddAttribute(bool a, string newGoName) : base(a) => NewGoName = newGoName;
+    }
+
+    /// <summary> 현재 씬 내에서 지정한 이름(TargetGoName)의 게임 오브젝트를 찾아, 타겟 멤버 타입의 컴포넌트를 찾아와 초기화
+    /// <para/> * 지정한 이름의 게임 오브젝트가 존재하지 않거나, 해당 컴포넌트가 존재하지 않을 경우 아무런 동작을 수행하지 않음
+    /// <para/> * AllowOverwrite : 이미 참조가 할당되어 있어도 기능을 수행하여 덮어쓸지 여부
+    /// </summary>
+    public class FindByNameAttribute : GetComponentBaseAttribute
+    {
+        public string TargetGoName { get; }
+
+        public FindByNameAttribute(string targetName, bool a = false) : base(a) => TargetGoName = targetName;
+        public FindByNameAttribute(bool a, string targetName) : base(a) => TargetGoName = targetName;
+    }
+
+    /// <summary> 현재 씬 내에서 지정한 이름(TargetGoName)의 게임 오브젝트를 찾아, 타겟 멤버 타입의 컴포넌트를 찾아와 초기화
+    /// <para/> * 지정한 이름의 게임 오브젝트가 존재하지 않을 경우, 씬 내에 새롭게 생성
+    /// <para/> * 지정한 이름의 게임 오브젝트 내에 해당 컴포넌트가 존재하지 않을 경우, 컴포넌트를 새롭게 추가
+    /// <para/> * AllowOverwrite : 이미 참조가 할당되어 있어도 기능을 수행하여 덮어쓸지 여부
+    /// </summary>
+    public class FindByNameOrAddAttribute : GetComponentBaseAttribute
+    {
+        public string TargetGoName { get; }
+
+        public FindByNameOrAddAttribute(string targetName, bool a = false) : base(a) => TargetGoName = targetName;
+        public FindByNameOrAddAttribute(bool a, string targetName) : base(a) => TargetGoName = targetName;
+    }
+
 
     #endregion // ==========================================================
 }
