@@ -1,0 +1,16 @@
+{
+	"name" : "com.rito.getcomponentattributes",
+	"version": "2.0.0",
+	"displayName" :"[Rito] GetComponent Attributes",
+	"description" :"GetComponent 메소드들을 애트리뷰트로 제공합니다",
+	"unity": "2018.1",
+	"dependencies": {},
+	"keywords": ["getcomponent","attribute"],
+	"author":
+	{
+		"name":"Rito",
+		"email":"ghdtkals15@naver.com",
+		"url":"https://github.com/rito15"
+	},
+	"category": "Unity"
+}
