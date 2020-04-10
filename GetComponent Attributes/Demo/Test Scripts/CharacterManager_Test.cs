@@ -23,6 +23,11 @@ public class CharacterManager_Test : MonoBehaviour
     [GetComponent]                 private Transform _privateMember1;
     [SerializeField, GetComponent] private Transform _privateMember2;
 
+    /* 프로퍼티에 대해서도 동일하게 동작하지만,
+       반드시 Getter와 Setter가 모두 존재해야 합니다. */
+    [GetComponent] public Collider PropertyMember { get => _col; private set => _col = value; }
+    public Collider _col;
+
 
     /* ******************************************************************************** *
      *                                     기능들                                       *
