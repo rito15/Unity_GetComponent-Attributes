@@ -164,7 +164,7 @@ public Collider _col;
   
 ## 주의사항
   - ```Component``` 클래스를 상속하는 타입의 멤버들에 대해서만 동작합니다.
-  - ```[GetComponent]``` 종류의 애트리뷰트는 ```Array```나 ```List```, ```Dictionary``` 등 컨테이너 또는 제네릭 타입의 멤버에 대해 동작하지 않습니다.
+  - ```[GetComponent]``` 종류의 애트리뷰트는 ```Array```나 ```List```, ```Dictionary``` 등 배열 또는 제네릭 타입의 멤버에 대해 동작하지 않습니다.
   - ```[GetComponents]``` 종류의 애트리뷰트는 요소의 타입이 ```Component```를 상속하는 경우의 ```Array``` 또는 ```List``` 타입 멤버에 대해 동작합니다.
   
   <br>
