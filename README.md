@@ -1,6 +1,5 @@
 # Unity_GetComponentAttributes
- - ```GetComponent()``` 종류의 메소드들을 필드/프로퍼티 애트리뷰트로 제공합니다.
- - 추가적으로, ```Find()``` 종류의 메소드들도 제공합니다.
+ - ```GetComponent()```, ```Find()``` 종류의 메소드들을 필드/프로퍼티 애트리뷰트로 제공합니다.
  
 <br>
 
