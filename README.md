@@ -16,15 +16,19 @@
 [GetComponent(false)] public Transform _whenAllowOverwriteIsFalse;
 [GetComponent(true)]  public Transform _whenAllowOverwriteIsTrue;
 
+
 /* Private, Protected, Public 등 모든 접근지정자에 대해 정상적으로 동작합니다.
    하이라키에서 확인하고 싶은 경우, SerializeField를 함께 사용합니다. */
 [GetComponent]                 private Transform _privateMember1;
 [SerializeField, GetComponent] private Transform _privateMember2;
 
+
 /* 프로퍼티에 대해서도 동일하게 동작하지만,
    반드시 Getter와 Setter가 모두 존재해야 합니다. */
 [GetComponent] public Collider PropertyMember { get => _col; private set => _col = value; }
 public Collider _col;
+
+
 
 /* ******************************************************************************** *
  *                                     기능들                                        *
@@ -125,6 +129,7 @@ public Collider _col;
 
 /* 현재 씬 내에서 해당 타입의 컴포넌트를 모두 찾아 리스트 형태로 가져옵니다. */
 [FindAll] public List<Collider> _allColliderList;
+
 
 
 /* ******************************************************************************** *
