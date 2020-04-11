@@ -150,12 +150,14 @@ public Collider _col;
   - 대상 멤버의 접근지정자에 관계 없이 모두 동작합니다.
   - 본 애트리뷰트들을 통한 컴포넌트 할당 기능은 OnEnable() 이후, Start() 이전에 동작합니다.
   - 씬 이동, 재시작 시에도 올바르게 동작합니다.
-  - ```Find()``` 종류의 애트리뷰트들은 게임 오브젝트의 자식 범위가 아닌, 씬 내의 모든 게임오브젝트들 대상으로 동작합니다.
+  - ```Find()``` 종류의 애트리뷰트들은 게임 오브젝트의 자식 범위가 아닌, 씬 내의 모든 게임오브젝트를 대상으로 동작합니다.
  
   <br>
 
 ## 사용법
-  - 컴포넌트 스크립트 상단에 ```using Rito.Attributes;```를 추가합니다.
+  - **유니티 프로젝트** - [**Window**] - [**Package Manager**] - [**+**](좌측 상단) - [**Add package from git URL**] -
+    <br> **https://github.com/rito15/Unity_GetComponent-Attributes.git** - [**Add**]
+  - 사용하려는 스크립트 상단에 ```using Rito.Attributes;```를 추가합니다.
   - 대상 필드 또는 프로퍼티의 앞에 ```[GetComponent]``` 종류의 애트리뷰트를 추가합니다.
  
   <br>
