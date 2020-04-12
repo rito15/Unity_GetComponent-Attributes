@@ -135,8 +135,11 @@ namespace Rito.Attributes.Test
          *                                잘못된 사용 예시                                  *
          * ******************************************************************************** */
 
-        /* 애트리뷰트를 올바르지 않게 사용한 경우, 콘솔 창에 경고 메시지를 표시합니다. */
+        /* 애트리뷰트를 올바르지 않게 사용한 경우, 콘솔 창에 경고 메시지와 대상 멤버 정보를 표시합니다. */
 
+
+        /* Component를 상속 받는 타입이 아닌 멤버에 사용한 경우 */
+        [GetComponent] public GameObject _gameObject_wrong;
 
         /* 엘리먼트 타입 대상 애트리뷰트를 배열 타입 멤버에 사용한 경우 */
         [Find] public GameManager_Test[] _manager_wrong;

@@ -9,12 +9,13 @@ namespace Rito.Attributes
      2020. 04. 07. 싱글톤 -> Start() 직전에 자동 호출되는 정적 메소드화,
                    애트리뷰트 파라미터에서 EventFlow 제거, AllowOverwrite 추가
      2020. 04. 07. GetOrAddComponentInAChild 추가
+     2020. 04. 12. AttributeUsage - bool 파라미터들 명시
 */
     #endregion // ==========================================================
 
     #region Base
 
-    [System.AttributeUsage(System.AttributeTargets.Field | System.AttributeTargets.Property)]
+    [System.AttributeUsage(System.AttributeTargets.Field | System.AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
     public abstract class GetComponentBaseAttribute : System.Attribute
     {
         /// <summary> 이미 기존에 할당한 경우에도 새롭게 GetComponent를 수행하여 덮어쓸지 여부 </summary>

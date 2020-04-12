@@ -19,6 +19,7 @@ namespace Rito.Attributes
      2020. 04. 07. 싱글톤 -> 로드 시 자동 호출되는 정적 메소드로 변경(OnEnable() ~ Start() 사이 호출)
      2020. 04. 08. 씬 재시작 시에도 기능이 동작하도록 추가
      2020. 04. 10. 필드 탐색 범위 NonPublic 추가 : private, protected 필드에도 모두 적용 가능
+     2020. 04. 12. 에러 타입 3종류로 세분화(컴포넌트가 아닌 경우, 배열이나 리스트인 경우/아닌 경우)
 */
     #endregion // ==========================================================
 
@@ -48,22 +49,15 @@ namespace Rito.Attributes
         /// <summary> 필드, 프로퍼티 대상으로 GetComponent, GetOrAddCOmponent 수행 </summary>
         private static void RunGetComponentActions(Component component)
         {
-            // 1. 모든 필드 찾기
+            // 모든 필드 찾기
             var fInfos = component.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
-            // 2. Component의 자식 타입인 참조형 필드만 골라내기 (is Component)
-            // 3. GetComponent류 애트리뷰트가 있는 필드만 골라내기
-            // 4. 입력된 이벤트 타이밍이 일치하는 필드만 골라내기
+            // 솎아내기
             var targetFInfos =
                 from fInfo in fInfos
                 where fInfo.GetCustomAttribute<GetComponentBaseAttribute>() != null &&
                       (fInfo.GetCustomAttribute<GetComponentBaseAttribute>().AllowOverwrite == true ||
                        fInfo.GetValue(component) == null || (fInfo.GetValue(component) as Component) == null
-                      )
-                      &&
-                      (fInfo.FieldType.Ex_IsChildOrEqualsTo(typeof(Component)) ||
-                       fInfo.FieldType.Ex_IsArrayAndChildOf(typeof(Component)) ||
-                       (fInfo.FieldType.Ex_IsListType())
                       )
                 select fInfo;
 
@@ -77,22 +71,33 @@ namespace Rito.Attributes
                       (pInfo.GetCustomAttribute<GetComponentBaseAttribute>().AllowOverwrite == true ||
                        pInfo.GetValue(component) == null || (pInfo.GetValue(component) as Component) == null
                       )
-                      &&
-                      (pInfo.PropertyType.Ex_IsChildOrEqualsTo(typeof(Component)) ||
-                       pInfo.PropertyType.Ex_IsArrayAndChildOf(typeof(Component)) ||
-                       (pInfo.PropertyType.Ex_IsListType())
-                      )
                 select pInfo;
 
             // 멤버 리스트로 병합
             List<MemberInfo> memberInfos = targetFInfos.ToList<MemberInfo>();
             memberInfos.AddRange(targetPInfos.ToList<MemberInfo>());
 
-            // 5. GetComponent 종류별로 해주기
+            // GetComponent 종류별로 수행
             foreach (var memberInfo in memberInfos)
             {
-                var customAttribute = memberInfo.GetCustomAttribute<GetComponentBaseAttribute>();
                 var memberType = memberInfo.Ex_GetMemberType();
+                Type componentType = typeof(Component);
+
+                // 컴포넌트 타입이 아닌 멤버에 애트리뷰트 사용한 경우 예외 처리
+                if (!
+                    (memberType.Ex_IsChildOrEqualsTo(componentType) ||
+                     memberType.Ex_IsArrayAndChildOf(componentType) ||
+                     memberType.Ex_IsListAndChildOf(componentType))
+                  )
+                {
+                    ErrorLog(memberInfo, component, memberType, "Target Member Must Be Component-Inheriting Type.");
+                    continue;
+                }
+
+                //
+
+
+                var customAttribute = memberInfo.GetCustomAttribute<GetComponentBaseAttribute>();
 
                 // 5-1. GetComponent, GetOrAddComponent - Element
                 if (memberType.Ex_IsChildOrEqualsTo(typeof(Component)))
@@ -295,7 +300,7 @@ namespace Rito.Attributes
                     break;
 
                 default:
-                    ErrorLog(memberInfo, component, memberType);
+                    ErrorLog(memberInfo, component, memberType, "Target Member Must Be Array or List.");
                     break;
             }
 
@@ -315,7 +320,7 @@ namespace Rito.Attributes
         {
             if (methodName.Length == 0)
             {
-                ErrorLog(memberInfo, component, memberType);
+                ErrorLog(memberInfo, component, memberType, "Target Member Must Not Be Array or List.");
                 return;
             }
 
@@ -384,10 +389,11 @@ namespace Rito.Attributes
             }
         }
 
+        /// <summary> 잘못된 애트리뷰트 사용에 대해 콘솔 경고 메시지 출력 </summary>
         [System.Diagnostics.Conditional("UNITY_EDITOR")]
-        public static void ErrorLog(in MemberInfo memberInfo, in Component component, in Type memberType)
+        public static void ErrorLog(in MemberInfo memberInfo, in Component component, in Type memberType, in string msg = "")
         {
-            Debug.LogWarning($"[Rito.GetComponentAttributes] Wrong Attribute Usage : \n\n" +
+            Debug.LogWarning($"[Rito.GetComponentAttributes] Wrong Attribute Usage :\n{(msg.Length > 0 ? msg + "\n" : "")}\n" +
                         $"GameObject : {component.gameObject.name}, \nComponent : {component.GetType()}, \n" +
                         $"Member Name : {memberInfo.Name}, \nMember Type : {memberType}\n\n\n");
         }
