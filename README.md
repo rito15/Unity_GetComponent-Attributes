@@ -135,16 +135,19 @@ public Collider _col;
  *                                잘못된 사용 예시                                   *
  * ******************************************************************************** */
 
-/* 애트리뷰트를 올바르지 않게 사용한 경우, 콘솔 창에 경고 메시지를 표시합니다. */
+/* 애트리뷰트를 올바르지 않게 사용한 경우, 콘솔 창에 경고 메시지와 대상 멤버 정보를 표시합니다. */
 
 
-/* 엘리먼트 타입 대상 애트리뷰트를 배열 타입 멤버에 사용한 경우 */
+/* Component를 상속 받는 타입이 아닌 멤버에 사용한 경우 */
+[GetComponent] public GameObject _gameObject_wrong;
+
+/* 엘리먼트 타입 대상 애트리뷰트를 배열, 리스트 타입 멤버에 사용한 경우 */
 [Find] public GameManager_Test[] _manager_wrong;
 
 /* 배열, 리스트 대상 애트리뷰트를 엘리먼트 타입 멤버에 사용한 경우 */
 [FindAll] public Spawner_Test _spawner_wrong;
 ```
-![image](https://user-images.githubusercontent.com/42164422/79011643-6a338800-7b9f-11ea-8a96-8fa134babb65.png)
+![image](https://user-images.githubusercontent.com/42164422/79060993-5d5d8400-7cc6-11ea-9b26-4536cdadd6dd.png)
 
  <br>
 
