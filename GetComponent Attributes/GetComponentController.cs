@@ -46,6 +46,12 @@ namespace Rito.Attributes
             }
         }
 
+        /// <summary> 원하는 타이밍에 특정 컴포넌트 내에서 실행 </summary>
+        public static void Run(in Component com)
+        {
+            RunGetComponentActions(com);
+        }
+
         /// <summary> 필드, 프로퍼티 대상으로 GetComponent, GetOrAddCOmponent 수행 </summary>
         private static void RunGetComponentActions(Component component)
         {
