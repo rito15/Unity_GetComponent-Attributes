@@ -166,6 +166,8 @@ public Collider _col;
     <br> **https://github.com/rito15/Unity_GetComponent-Attributes.git** - [**Add**]
   - 사용하려는 스크립트 상단에 ```using Rito.Attributes;```를 추가합니다.
   - 대상 필드 또는 프로퍼티의 앞에 ```[GetComponent]``` 종류의 애트리뷰트를 추가합니다.
+  - [2020-04-13 업데이트] 컴포넌트 스크립트 내에서 ```GetComponentController.Run(this);```를 호출하여,
+    <br>원하는 타이밍에 자신의 컴포넌트 내 멤버들을 대상으로 실행할 수 있습니다.
  
   <br>
   
