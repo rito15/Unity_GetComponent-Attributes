@@ -166,7 +166,6 @@ public Collider _col;
     <br> **https://github.com/rito15/Unity_GetComponent-Attributes.git** - [**Add**]
   - 사용하려는 스크립트 상단에 ```using Rito.Attributes;```를 추가합니다.
   - 대상 필드 또는 프로퍼티의 앞에 ```[GetComponent]``` 종류의 애트리뷰트를 추가합니다.
-  - 비활성화 상태인 컴포넌트 내에서도 애트리뷰트가 동작하며, 마찬가지로 비활성화 상태인 컴포넌트도 찾아 가져옵니다.
  
   <br>
   
@@ -174,6 +173,7 @@ public Collider _col;
   - ```Component``` 클래스를 상속하는 타입의 멤버들에 대해서만 동작합니다.
   - ```[GetComponent]``` 종류의 애트리뷰트는 ```Array```나 ```List```, ```Dictionary``` 등 배열 또는 제네릭 타입의 멤버에 대해 동작하지 않습니다.
   - ```[GetComponents]``` 종류의 애트리뷰트는 요소의 타입이 ```Component```를 상속하는 경우의 ```Array``` 또는 ```List``` 타입 멤버에 대해 동작합니다.
+  - 비활성화 상태인 컴포넌트 내에서도 애트리뷰트가 동작하며, 마찬가지로 비활성화 상태인 컴포넌트도 찾아 가져올 수 있습니다.
   
   <br>
   
