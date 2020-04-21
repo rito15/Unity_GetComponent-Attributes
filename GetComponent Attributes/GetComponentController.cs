@@ -406,4 +406,10 @@ namespace Rito.Attributes
 
         #endregion // ==========================================================
     } // class End
+
+    /// <summary> Acronate(GetComponentController) </summary>
+    public static class GCC
+    {
+        public static void Run(in Component com) => GetComponentController.Run(com);
+    }
 }
