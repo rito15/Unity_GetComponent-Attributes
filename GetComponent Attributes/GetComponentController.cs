@@ -82,7 +82,8 @@ namespace Rito.Attributes
                 var basePInfos = thisComponentBaseType.GetProperties(nonPublicFlags);
                 foreach (var pInfo in basePInfos)
                 {
-                    if (pInfo.GetMethod != null && pInfo.GetMethod.IsPrivate)
+                    if (pInfo.GetMethod != null && pInfo.GetMethod.IsPrivate &&
+                        pInfo.SetMethod != null && pInfo.SetMethod.IsPrivate)
                         pInfos.Add(pInfo);
                 }
 
