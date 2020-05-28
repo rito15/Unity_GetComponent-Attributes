@@ -22,7 +22,7 @@ namespace Rito.Attributes
         public bool AllowOverwrite { get; }
 
         public GetComponentBaseAttribute() => AllowOverwrite = false;
-        public GetComponentBaseAttribute(bool a) => AllowOverwrite = a;
+        public GetComponentBaseAttribute(bool allowOverwrite) => AllowOverwrite = allowOverwrite;
     }
 
     #endregion // ==========================================================
@@ -35,7 +35,7 @@ namespace Rito.Attributes
     public class GetComponentAttribute : GetComponentBaseAttribute
     {
         public GetComponentAttribute() : base() { }
-        public GetComponentAttribute(bool a) : base(a) { }
+        public GetComponentAttribute(bool allowOverwrite) : base(allowOverwrite) { }
     }
 
     /// <summary> 게임오브젝트에서 해당 타입의 컴포넌트들을 찾아 지정된 필드 또는 프로퍼티에 초기화합니다.
@@ -45,7 +45,7 @@ namespace Rito.Attributes
     public class GetComponentsAttribute : GetComponentBaseAttribute
     {
         public GetComponentsAttribute() : base() { }
-        public GetComponentsAttribute(bool a) : base(a) { }
+        public GetComponentsAttribute(bool allowOverwrite) : base(allowOverwrite) { }
     }
 
     /// <summary> 자신 및 자식 게임오브젝트에서 해당 타입의 컴포넌트를 찾아 지정된 필드 또는 프로퍼티에 초기화합니다. 
@@ -54,7 +54,7 @@ namespace Rito.Attributes
     public class GetComponentInChildrenAttribute : GetComponentBaseAttribute
     {
         public GetComponentInChildrenAttribute() : base() { }
-        public GetComponentInChildrenAttribute(bool a) : base(a) { }
+        public GetComponentInChildrenAttribute(bool allowOverwrite) : base(allowOverwrite) { }
     }
 
     /// <summary> 자신 및 자식 게임오브젝트에서 해당 타입의 컴포넌트들을 찾아 지정된 필드 또는 프로퍼티에 초기화합니다.
@@ -64,7 +64,7 @@ namespace Rito.Attributes
     public class GetComponentsInChildrenAttribute : GetComponentBaseAttribute
     {
         public GetComponentsInChildrenAttribute() : base() { }
-        public GetComponentsInChildrenAttribute(bool a) : base(a) { }
+        public GetComponentsInChildrenAttribute(bool allowOverwrite) : base(allowOverwrite) { }
     }
 
     /// <summary> 자신 및 부모 게임오브젝트에서 해당 타입의 컴포넌트를 찾아 지정된 필드 또는 프로퍼티에 초기화합니다. 
@@ -73,7 +73,7 @@ namespace Rito.Attributes
     public class GetComponentInParentAttribute : GetComponentBaseAttribute
     {
         public GetComponentInParentAttribute() : base() { }
-        public GetComponentInParentAttribute(bool a) : base(a) { }
+        public GetComponentInParentAttribute(bool allowOverwrite) : base(allowOverwrite) { }
     }
 
     /// <summary> 자신 및 부모 게임오브젝트에서 해당 타입의 컴포넌트들을 찾아 지정된 필드 또는 프로퍼티에 초기화합니다.
@@ -83,7 +83,7 @@ namespace Rito.Attributes
     public class GetComponentsInParentAttribute : GetComponentBaseAttribute
     {
         public GetComponentsInParentAttribute() : base() { }
-        public GetComponentsInParentAttribute(bool a) : base(a) { }
+        public GetComponentsInParentAttribute(bool allowOverwrite) : base(allowOverwrite) { }
     }
 
     /// <summary> 지정한 이름의 자식 게임오브젝트에서 해당 타입의 컴포넌트를 찾아 지정된 필드 또는 프로퍼티에 초기화합니다. 
@@ -98,10 +98,10 @@ namespace Rito.Attributes
         public GetComponentInChildAttribute(string childName) : base()
             => ChildObjectName = childName;
 
-        public GetComponentInChildAttribute(bool a, string childName) : base(a)
+        public GetComponentInChildAttribute(bool allowOverwrite, string childName) : base(allowOverwrite)
             => ChildObjectName = childName;
 
-        public GetComponentInChildAttribute(string childName, bool a) : base(a)
+        public GetComponentInChildAttribute(string childName, bool allowOverwrite) : base(allowOverwrite)
             => ChildObjectName = childName;
     }
 
@@ -116,7 +116,7 @@ namespace Rito.Attributes
     public class GetOrAddComponentAttribute : GetComponentBaseAttribute
     {
         public GetOrAddComponentAttribute() : base() { }
-        public GetOrAddComponentAttribute(bool a) : base(a) { }
+        public GetOrAddComponentAttribute(bool allowOverwrite) : base(allowOverwrite) { }
     }
 
     /// <summary> 
@@ -133,9 +133,9 @@ namespace Rito.Attributes
 
         public GetOrAddComponentInChildAttribute(string childName) : base()
             => ChildObjectName = childName;
-        public GetOrAddComponentInChildAttribute(bool a, string childName) : base(a)
+        public GetOrAddComponentInChildAttribute(bool allowOverwrite, string childName) : base(allowOverwrite)
             => ChildObjectName = childName;
-        public GetOrAddComponentInChildAttribute(string childName, bool a) : base(a)
+        public GetOrAddComponentInChildAttribute(string childName, bool allowOverwrite) : base(allowOverwrite)
             => ChildObjectName = childName;
     }
 
@@ -153,9 +153,9 @@ namespace Rito.Attributes
 
         public GetOrAddComponentInChildrenAttribute(string childName) : base()
             => ChildObjectName = childName;
-        public GetOrAddComponentInChildrenAttribute(bool a, string childName) : base(a)
+        public GetOrAddComponentInChildrenAttribute(bool allowOverwrite, string childName) : base(allowOverwrite)
             => ChildObjectName = childName;
-        public GetOrAddComponentInChildrenAttribute(string childName, bool a) : base(a)
+        public GetOrAddComponentInChildrenAttribute(string childName, bool allowOverwrite) : base(allowOverwrite)
             => ChildObjectName = childName;
     }
 
@@ -174,9 +174,9 @@ namespace Rito.Attributes
 
         public GetOrAddComponentInParentAttribute(string parentName) : base()
             => ParentObjectName = parentName;
-        public GetOrAddComponentInParentAttribute(bool a, string parentName) : base(a)
+        public GetOrAddComponentInParentAttribute(bool allowOverwrite, string parentName) : base(allowOverwrite)
             => ParentObjectName = parentName;
-        public GetOrAddComponentInParentAttribute(string parentName, bool a) : base(a)
+        public GetOrAddComponentInParentAttribute(string parentName, bool allowOverwrite) : base(allowOverwrite)
             => ParentObjectName = parentName;
     }
 
@@ -190,7 +190,7 @@ namespace Rito.Attributes
     public class GetComponentInChildrenOnlyAttribute : GetComponentBaseAttribute
     {
         public GetComponentInChildrenOnlyAttribute() : base() { }
-        public GetComponentInChildrenOnlyAttribute(bool a) : base(a) { }
+        public GetComponentInChildrenOnlyAttribute(bool allowOverwrite) : base(allowOverwrite) { }
     }
 
     /// <summary> 자신을 제외한 부모 게임오브젝트들에서 해당 타입의 컴포넌트를 찾아 지정된 필드 또는 프로퍼티에 초기화합니다. 
@@ -199,7 +199,7 @@ namespace Rito.Attributes
     public class GetComponentInParentOnlyAttribute : GetComponentBaseAttribute
     {
         public GetComponentInParentOnlyAttribute() : base() { }
-        public GetComponentInParentOnlyAttribute(bool a) : base(a) { }
+        public GetComponentInParentOnlyAttribute(bool allowOverwrite) : base(allowOverwrite) { }
     }
 
     /// <summary> 자신을 제외한 자식 게임오브젝트들에서 해당 타입의 컴포넌트들을 찾아 지정된 필드 또는 프로퍼티에 초기화합니다. 
@@ -208,7 +208,7 @@ namespace Rito.Attributes
     public class GetComponentsInChildrenOnlyAttribute : GetComponentBaseAttribute
     {
         public GetComponentsInChildrenOnlyAttribute() : base() { }
-        public GetComponentsInChildrenOnlyAttribute(bool a) : base(a) { }
+        public GetComponentsInChildrenOnlyAttribute(bool allowOverwrite) : base(allowOverwrite) { }
     }
 
     /// <summary> 자신을 제외한 부모 게임오브젝트들에서 해당 타입의 컴포넌트들을 찾아 지정된 필드 또는 프로퍼티에 초기화합니다. 
@@ -217,7 +217,7 @@ namespace Rito.Attributes
     public class GetComponentsInParentOnlyAttribute : GetComponentBaseAttribute
     {
         public GetComponentsInParentOnlyAttribute() : base() { }
-        public GetComponentsInParentOnlyAttribute(bool a) : base(a) { }
+        public GetComponentsInParentOnlyAttribute(bool allowOverwrite) : base(allowOverwrite) { }
     }
 
     #endregion // ==========================================================
@@ -230,7 +230,7 @@ namespace Rito.Attributes
     /// </summary>
     public class FindAttribute : GetComponentBaseAttribute
     {
-        public FindAttribute(bool a = false) : base(a) { }
+        public FindAttribute(bool allowOverwrite = false) : base(allowOverwrite) { }
     }
 
     /// <summary> 현재 씬 내에서 타겟 타입의 컴포넌트를 모두 찾아와 초기화
@@ -239,7 +239,7 @@ namespace Rito.Attributes
     /// </summary>
     public class FindAllAttribute : GetComponentBaseAttribute
     {
-        public FindAllAttribute(bool a = false) : base(a) { }
+        public FindAllAttribute(bool allowOverwrite = false) : base(allowOverwrite) { }
     }
 
     /// <summary> 현재 씬 내에서 타겟 타입의 컴포넌트를 찾아와 초기화
@@ -250,8 +250,8 @@ namespace Rito.Attributes
     {
         public string NewGoName { get; }
 
-        public FindOrAddAttribute(string newGoName, bool a = false) : base(a) => NewGoName = newGoName;
-        public FindOrAddAttribute(bool a, string newGoName) : base(a) => NewGoName = newGoName;
+        public FindOrAddAttribute(string newGoName, bool allowOverwrite = false) : base(allowOverwrite) => NewGoName = newGoName;
+        public FindOrAddAttribute(bool allowOverwrite, string newGoName) : base(allowOverwrite) => NewGoName = newGoName;
     }
 
     /// <summary> 현재 씬 내에서 지정한 이름(TargetGoName)의 게임 오브젝트를 찾아, 타겟 멤버 타입의 컴포넌트를 찾아와 초기화
@@ -262,8 +262,8 @@ namespace Rito.Attributes
     {
         public string TargetGoName { get; }
 
-        public FindByNameAttribute(string targetName, bool a = false) : base(a) => TargetGoName = targetName;
-        public FindByNameAttribute(bool a, string targetName) : base(a) => TargetGoName = targetName;
+        public FindByNameAttribute(string targetName, bool allowOverwrite = false) : base(allowOverwrite) => TargetGoName = targetName;
+        public FindByNameAttribute(bool allowOverwrite, string targetName) : base(allowOverwrite) => TargetGoName = targetName;
     }
 
     /// <summary> 현재 씬 내에서 지정한 이름(TargetGoName)의 게임 오브젝트를 찾아, 타겟 멤버 타입의 컴포넌트를 찾아와 초기화합니다.
@@ -275,8 +275,8 @@ namespace Rito.Attributes
     {
         public string TargetGoName { get; }
 
-        public FindByNameOrAddAttribute(string targetName, bool a = false) : base(a) => TargetGoName = targetName;
-        public FindByNameOrAddAttribute(bool a, string targetName) : base(a) => TargetGoName = targetName;
+        public FindByNameOrAddAttribute(string targetName, bool allowOverwrite = false) : base(allowOverwrite) => TargetGoName = targetName;
+        public FindByNameOrAddAttribute(bool allowOverwrite, string targetName) : base(allowOverwrite) => TargetGoName = targetName;
     }
 
 
