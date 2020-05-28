@@ -55,8 +55,39 @@ namespace Rito.Attributes
         /// <summary> 필드, 프로퍼티 대상으로 GetComponent, GetOrAddCOmponent 수행 </summary>
         private static void RunGetComponentActions(Component component)
         {
-            // 모든 필드 찾기
-            var fInfos = component.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            Type thisComponentType = component.GetType();
+            Type thisComponentBaseType = thisComponentType.BaseType;
+
+            BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            BindingFlags nonPublicFlags = BindingFlags.Instance | BindingFlags.NonPublic;
+
+            // 모든 필드, 프로퍼티 찾기
+            var fInfos = thisComponentType.GetFields(flags).ToList();
+            var pInfos = thisComponentType.GetProperties(flags).ToList();
+
+            // 부모 타입이 존재하는 경우 : private 필드, 프로퍼티 추가
+            while (thisComponentBaseType != null
+                && !thisComponentBaseType.Equals(typeof(MonoBehaviour))
+                && !thisComponentBaseType.Equals(typeof(Behaviour))
+                && !thisComponentBaseType.Equals(typeof(Component))
+                )
+            {
+                var baseFInfos = thisComponentBaseType.GetFields(nonPublicFlags);
+                foreach (var fInfo in baseFInfos)
+                {
+                    if (fInfo.IsPrivate)
+                        fInfos.Add(fInfo);
+                }
+
+                var basePInfos = thisComponentBaseType.GetProperties(nonPublicFlags);
+                foreach (var pInfo in basePInfos)
+                {
+                    if (pInfo.GetMethod != null && pInfo.GetMethod.IsPrivate)
+                        pInfos.Add(pInfo);
+                }
+
+                thisComponentBaseType = thisComponentBaseType.BaseType;
+            }
 
             // 솎아내기
             var targetFInfos =
@@ -66,9 +97,6 @@ namespace Rito.Attributes
                        fInfo.GetValue(component) == null || (fInfo.GetValue(component) as Component) == null
                       )
                 select fInfo;
-
-            // 프로퍼티에 똑같이 수행
-            var pInfos = component.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
             var targetPInfos =
                 from pInfo in pInfos
@@ -81,7 +109,7 @@ namespace Rito.Attributes
 
             // 멤버 리스트로 병합
             List<MemberInfo> memberInfos = targetFInfos.ToList<MemberInfo>();
-            memberInfos.AddRange(targetPInfos.ToList<MemberInfo>());
+            memberInfos.AddRange(targetPInfos);
 
             // GetComponent 종류별로 수행
             foreach (var memberInfo in memberInfos)
